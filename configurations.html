@@ -209,6 +209,19 @@
     $(document).ready(function(){ 
       $('.sidenav').sidenav();
       $('select').formSelect();
+
+      if(localStorage.getItem("data1") == null){
+        console.log(1)
+        localStorage.setItem("data1", JSON.stringify([]));
+        localStorage.setItem("samples1", JSON.stringify([]));
+        localStorage.setItem("numdata1", 0);
+      }
+      if(localStorage.getItem("data2") == null){
+        console.log(2)
+        localStorage.setItem("data2", JSON.stringify([]));
+        localStorage.setItem("samples2", JSON.stringify([]));
+        localStorage.setItem("numdata2", 0);
+      }
     });
   </script>
   <script>
