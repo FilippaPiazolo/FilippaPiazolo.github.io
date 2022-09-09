@@ -766,7 +766,7 @@ function all_density(){
     allGene = tmp[3];
 
   var numberChr = parseInt(localStorage.getItem("chrNumber"))
-  if(numberChr == null)
+  if(numberChr == NaN)
     numberChr = 0
 
   var cluster = define_cluster(parseFloat(clusterThreshold), parseInt(minClusterSize), allDensity, allGene, allMutNum);
