@@ -157,7 +157,7 @@ function draw_comparison_distribution(pointsA, pointsB, g, distance_c, c_width, 
 function draw_comparison_all(data_genome, centromere,dataA, dataB)
 {
   const width = $("#datacomp").width(),
-    height = width*1.2,
+    height = width*1.4,
     c_width = width/50,
     distance_c = c_width*2,
     c_factor = 300000,
