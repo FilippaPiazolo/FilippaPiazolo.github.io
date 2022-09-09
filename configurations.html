@@ -266,6 +266,7 @@
     //selection of datatype for dataset 1
     var data1_type = localStorage.getItem("datatype1");
     if (data1_type == null) {
+      localStorage.setItem("datatype1", "pm")
       data1_type = "pm";
     }
     document.querySelector("#data1_type option[value="+data1_type+"]").setAttribute('selected', 'selected');
@@ -278,6 +279,7 @@
     //selection of datatype for dataset 2
     var data2_type = data2_type = localStorage.getItem("datatype2");
     if (data2_type == null){
+      localStorage.setItem("datatype2", "pm")
       data2_type = "pm";
     }
     document.querySelector("#data2_type option[value="+data2_type+"]").setAttribute('selected', 'selected');
@@ -290,6 +292,7 @@
     //selection of genome type for both datasets
     var genomeType = localStorage.getItem("genomeType");
     if (genomeType == null) {
+      localStorage.setItem("genomeType", "human")
       genomeType = "human";
     }
     document.querySelector("#genomeType option[value="+genomeType+"]").setAttribute('selected', 'selected');
@@ -302,6 +305,7 @@
     //selection of genome reference for both datasets
     var genomeRef = localStorage.getItem("genomeRef");
     if(genomeRef == null) {
+      localStorage.setItem("genomeRef", "hg19")
       genomeRef = "hg19";
     }
     document.querySelector("#genomeRef option[value="+genomeRef+"]").setAttribute('selected', 'selected');
