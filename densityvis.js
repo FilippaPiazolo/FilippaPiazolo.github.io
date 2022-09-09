@@ -590,8 +590,6 @@ function draw_diagram_chr(chromosome, data_genome, bins, density) {
   const width = $("#densvisChr").width(), //width of the diagram
     height = width/5; //height of the diagram
 
-  console.log(chromosome)
-  console.log(data_genome[chromosome])
   /*data/mutations*/
   const length = data_genome[chromosome-1].size;  //length of chromosome from given number
 
@@ -770,9 +768,7 @@ function all_density(){
     numberChr = 0
 
   var cluster = define_cluster(parseFloat(clusterThreshold), parseInt(minClusterSize), allDensity, allGene, allMutNum);
-  
-  console.log(numberChr)
-  console.log("new")
+
   //draw chromosome diagram of clicked chromosome
   draw_diagram_chr(numberChr+1, data_genome, allBins[numberChr], allDensity[numberChr])
 
