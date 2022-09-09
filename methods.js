@@ -202,7 +202,6 @@ function createCheckboxesDataVis(){
     }
   }
   if (sample2.length == 0){
-    console.log(1)
     createCheckbox("Dataset2", color2[0]);
   } else {
     for(i = 0; i<sample2.length; i++){

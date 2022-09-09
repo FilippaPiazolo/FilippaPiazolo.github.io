@@ -35,9 +35,11 @@ function draw_svg()
 
   let centromere, data_genome;
   if (localStorage.getItem("genomeType") == "human"){
+    console.log("h")
     centromere = human_centromere;
     data_genome = human_genome;
   } else if (localStorage.getItem("genomeType") == "mouse"){
+    console.log("g")
     centromere = mouse_centromere;
     data_genome = mouse_genome;
   }
