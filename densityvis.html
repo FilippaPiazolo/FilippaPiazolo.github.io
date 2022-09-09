@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>VNGS</title>
+  </head>
+  <body>
+    <div class="navbar-fixed">
+      <nav class="nav-wrapper indigo">
+        <a href="#" class="sidenav-trigger show-on-large" data-target="mobile-links">
+          <i class="material-icons">menu</i>
+        </a>
+        <div class="container">
+          <a href="#" class="brand-logo center">Density visualisation</a>
+          <div class="right">
+            <!-- Dropdown Trigger -->
+            <a class='dropdown-trigger btn' href='#' data-target='dropdown1'><i class="fa fa-download"></i></a>
+            <!-- Dropdown Structure -->
+            <ul id='dropdown1' class='dropdown-content'>
+              <li id='drop1'>
+                <a id="downloadLink1" href="#" download="density_chromosome.svg"  title="Download Specific Chromosome Image">specific</a>
+              </li>
+              <li id='drop2'>
+                <a id="downloadLink2" href="#" download="density_all.svg"  title="Download Overall Chromosome Image">overall</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  
+    <!-- make the side navigation here: include links when they are ready-->
+    <ul class="sidenav" id="mobile-links">
+      <li><a href="index.html">Main page</a></li>
+      <li><a href="configurations.html">Configurations</a></li>
+      <li><a href="datavis.html">Visualise data</a></li>
+      <li><a href="">Density visualisation</a></li>
+      <li><a href="densitycomp.html">Density comparison</a></li>
+    </ul>
+
+    <!-- -->
+    <div class="row">
+      <div class="container" style="width:90%">
+        <div class="row">
+          <p> <!-- Hier kommt die Beschreibung der Seite hin, was man hier machen kann -->
+            Here is an interactiv visualisation of the density distribution out of the SNPs on the chromosomes. Select those datasets or experiments for which you ant to visualise the density.
+            Click on the parameters to change the values. Using the kernel density estimation the density is calculated. The calculated value is then used to define different clusters.
+            Moving the mouse over the image, detail informations about bins and clusters can be seen. To have a better view on one chromosome you can click on it to see the specific histogramm and density curve.
+            To get to the UCSC genome browser for further informations you can click on the cluster number. 
+          </p>
+        </div>
+      
+
+      <!-- hier brauchen wir svg für alle chromosomen und für einzelnen, zudem viele Slider, checkboxes und selections-->
+      <!-- kann man hier einstellen, dass die linke Spalte immer so bleibt und man rechts hochscrollen kann ??? -->
+      <div class="col s9 push-s3" style="overflow-y:scroll; height:800px;">
+        <!--span class="flow-text">And here are the diagrams.</span-->
+        <svg width="100%" id="densvisChr"></svg>
+        <div class="row">
+          <form action="#" id="checkboxes">
+          <div class="col s3">
+              <p>
+                <label>
+                  <input type="checkbox" id="distributionCbx"/>
+                  <span>distribution</span>
+                </label>
+              </p>
+            </div>
+            <div class="col s3">
+              <p>
+                <label>
+                  <input type="checkbox" id="mutationCbx"/>
+                  <span>mutations</span>
+                </label>
+              </p>
+            </div>
+            <div class="col s4">
+              <p>
+                <label>
+                  <input type="checkbox" id="binMutCbx"/>
+                  <span>mark bins with min. number of mutations</span>
+                </label>
+              </p>
+            </div>
+            <div class="col s2">
+              <p>
+                <label>
+                  <input type="checkbox" id="clusterCbx" />
+                  <span>cluster</span>
+                </label>
+              </p>
+            </div>
+          </form>
+        </div>
+        <div class="col s12">
+          <svg width="100%" id="densvisAll"></svg>
+        </div>
+      </div>
+
+      <div class="col s3 pull-s9">
+        <span class="flow-text">Parameter Settings:</span>
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header" id="binSize_head">bin size: 500000</div>
+            <div class="collapsible-body">
+              <span>changes the size of the bars in the histogram and the size of the grayscaled bins on the chromosomes</span>
+              <p class="range-field">  
+                <input type="range" min="500000" max="10000000" step="500" value="500000" v-model="nodeSize" id="binSize"/> 
+                <input type="number" min="500000" max="10000000" step="500" value="500000" class="validate" id="binSize_text"/> 
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header" id="bandwith_head">bandwith: 2000000</div>
+            <div class="collapsible-body">
+              <span>is needed for kernel density estimation, defines how smooth the graph is</span>
+              <p class="range-field">  
+                <input type="range" min="100000" max="6000000" step="500" value="2000000" v-model="nodeSize" id="bandwith"/> 
+                <input type="number" min="100000" max="6000000" step="500" value="2000000" class="validate" id="bandwith_text"/> 
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header" id="amplitude_head">amplitude: 100000000</div>
+            <div class="collapsible-body">
+              <span>changes the amplitude of the kernel function and in result the amplitude of the graph and the darkness of the grayscale</span>
+              <p class="range-field">  
+                <input type="range" min="3000000" max="1000000000" step="5000" value="100000000" v-model="nodeSize" id="amplitude"/> 
+                <input type="number" min="3000000" max="1000000000" step="5000" value="100000000" class="validate" id="amplitude_text"/> 
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header" id="numMut_head">minimum number of mutations: 2</div>
+            <div class="collapsible-body">
+              <span>all the bins with at least this number of mutations can be marked with a red line on the side of the chromosomes</span>
+              <p class="range-field">  
+                <input type="range" min="1" max="10" step="1" value="2" v-model="nodeSize" id="numMut"/> 
+                <input type="number" min="1" max="10" step="1" value="2" class="validate" id="numMut_text"/> 
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header" id="cluster_head">cluster threshold value: 0.5</div>
+            <div class="collapsible-body">
+              <span> all bins with kde value above the defined value are consideres as a cluster</span>
+              <p class="range-field">  
+                <input type="range" min="0" max="1.5" step="0.05" value="0.5" v-model="nodeSize" id="cluster"/> 
+                <input type="number" min="0" max="1.5" step="0.05" value="0.5" class="validate" id="cluster_text"/> 
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header" id="minClusterSize_head">minimal cluster size: 1000000</div>
+            <div class="collapsible-body">
+              <span>a cluster must have this size (number of included nucleotides), otherwise it is not defined as a cluster</span>
+              <p class="range-field">  
+                <input type="range" min="500000" max="5000000" step="50000" value="1000000" v-model="nodeSize" id="minClusterSize"/> 
+                <input type="number" min="500000" max="5000000" step="50000" value="1000000" class="validate" id="minClusterSize_text" /> 
+              </p>
+            </div>
+          </li>
+        </ul>
+        
+        <form action="#">
+          <div class="input-field col s12">
+            <select multiple id="select">
+              <option value="" disabled selected>Choose your option</option>
+            </select>
+            <label>Dataset/Experiment selection</label>
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
+
+    <div class="divider"></div>
+    
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="methods.js"></script>
+    <script src="datavis_mutations.js"></script>
+    <script src="densityvis.js"></script>
+    <script>
+      $(document).ready(function(){ 
+        $('.sidenav').sidenav();
+        createSelectAll('select');
+        $('select').formSelect();
+        $('.collapsible').collapsible();
+        $('.dropdown-trigger').dropdown();
+        all_density();
+        //hier alle Parameter richtig setzen
+        var binSize = localStorage.getItem("binSize1"),
+          bandwith = localStorage.getItem("bandwith1"),
+          amplitude = localStorage.getItem("amplitude1"),
+          clusterThreshold = localStorage.getItem("cluster"),
+          minClusterSize = localStorage.getItem("minClusterSize"),
+          minNumMut = localStorage.getItem("numMut");
+        if (binSize == null){
+          binSize = 500000;
+          localStorage.setItem("binSize1", binSize);
+        }
+        if (bandwith == null){
+          bandwith = 2000000;
+          localStorage.setItem("bandwith1", bandwith);
+        }
+        if (amplitude == null){
+          amplitude = 100000000;
+          localStorage.setItem("amplitude1", amplitude);
+        }
+        if (clusterThreshold == null){
+          clusterThreshold = 0.5;
+          localStorage.setItem("cluster", clusterThreshold);
+        }
+        if (minClusterSize == null){
+          minClusterSize = 1000000;
+          localStorage.setItem("minClusterSize", minClusterSize);
+        }
+        if (minNumMut == null){
+          minNumMut = 2;
+          localStorage.setItem("numMut", minNumMut);
+        }
+
+        $('#binSize_head').text("bin size: " + binSize);
+        document.getElementById('binSize_text').value = binSize;
+        document.getElementById('binSize').value = binSize;
+
+        $('#bandwith_head').text("bandwith: " + bandwith);
+        document.getElementById('bandwith_text').value = bandwith;
+        document.getElementById('bandwith').value = bandwith;
+
+        $('#amplitude_head').text("amplitude: " + amplitude);
+        document.getElementById('amplitude_text').value = amplitude;
+        document.getElementById('amplitude').value = amplitude;
+
+        $('#numMut_head').text("minimum number of mutations: " + minNumMut);
+        document.getElementById('numMut_text').value = minNumMut;
+        document.getElementById('numMut').value = minNumMut;
+
+        $('#cluster_head').text("cluster threshold value: " + clusterThreshold);
+        document.getElementById('cluster_text').value = clusterThreshold;
+        document.getElementById('cluster').value = clusterThreshold;
+
+        $('#minClusterSize_head').text("minimal cluster size:" + minClusterSize);
+        document.getElementById('minClusterSize_text').value = minClusterSize;
+        document.getElementById('minClusterSize').value = minClusterSize;
+      });
+      
+      $("#drop1").click(function(){
+        downloadSVG("densvisChr", "downloadLink1");
+      })
+      
+      $("#drop2").click(function() { 
+          downloadSVG("densvisAll", "downloadLink2");
+      });
+
+      $('#select').change(function(){
+        all_density();
+      })
+      $('#checkboxes').change(function(){
+        all_density();
+      })
+
+      //slider change
+      $('#binSize').change(function(){
+        var binSize = $('#binSize').val();
+        $('#binSize_head').text("bin size: " + binSize);
+        document.getElementById('binSize_text').value = binSize;
+        localStorage.setItem("binSize1", binSize);
+        all_density();
+      })
+      $('#bandwith').change(function(){
+        var bandwith = $('#bandwith').val();
+        $('#bandwith_head').text("bandwith: " + bandwith);
+        document.getElementById('bandwith_text').value = bandwith;
+        localStorage.setItem("bandwith1", bandwith);
+        all_density();
+      })
+      $('#amplitude').change(function(){
+        var amplitude = $('#amplitude').val();
+        $('#amplitude_head').text("amplitude: " + amplitude);
+        document.getElementById('amplitude_text').value = amplitude;
+        localStorage.setItem("amplitude1", amplitude);
+        all_density();
+      })
+      $('#numMut').change(function(){
+        var numMut = $('#numMut').val()
+        $('#numMut_head').text("minimum number of mutations: " + numMut);
+        document.getElementById('numMut_text').value = numMut;
+        localStorage.setItem("numMut", numMut);
+        all_density();
+      })
+      $('#cluster').change(function(){
+        var clusterThreshold = $('#cluster').val();
+        $('#cluster_head').text("cluster threshold value: " + clusterThreshold);
+        document.getElementById('cluster_text').value = clusterThreshold;
+        localStorage.setItem("cluster", clusterThreshold);
+        all_density();
+      })
+      $('#minClusterSize').change(function(){
+        var minClusterSize = $('#minClusterSize').val();
+        $('#minClusterSize_head').text("minimal cluster size:" + minClusterSize);
+        document.getElementById('minClusterSize_text').value = minClusterSize;
+        localStorage.setItem("minClusterSize", minClusterSize);
+        all_density();
+      })
+
+      //textbox change
+      $('#binSize_text').change(function(){
+        var binSize = $('#binSize_text').val();
+        $('#binSize_head').text("bin size: " + binSize);
+        document.getElementById('binSize').value = binSize;
+        localStorage.setItem("binSize1", binSize);
+        all_density();
+      })
+      $('#bandwith_text').change(function(){
+        var bandwith = $('#bandwith_text').val();
+        $('#bandwith_head').text("bandwith: " + bandwith);
+        document.getElementById('bandwith').value = bandwith;
+        localStorage.setItem("bandwith1", bandwith);
+        all_density();
+      })
+      $('#amplitude_text').change(function(){
+        var amplitude = $('#amplitude_text').val();
+        $('#amplitude_head').text("amplitude: " + amplitude);
+        document.getElementById('amplitude').value = amplitude;
+        localStorage.setItem("amplitude1", amplitude);
+        all_density();
+      })
+      $('#numMut_text').change(function(){
+        var numMut =  $('#numMut_text').val();
+        $('#numMut_head').text("minimum number of mutations: " + numMut);
+        document.getElementById('numMut').value = numMut;
+        localStorage.setItem("numMut", numMut);
+        all_density();
+      })
+      $('#cluster_text').change(function(){
+        var clusterThreshold = $('#cluster_text').val();
+        $('#cluster_head').text("cluster threshold value: " + clusterThreshold);
+        document.getElementById('cluster').value = clusterThreshold;
+        localStorage.setItem("cluster", clusterThreshold);
+        all_density();
+      })
+      $('#minClusterSize_text').change(function(){
+        var minClusterSize = $('#minClusterSize_text').val();
+        $('#minClusterSize_head').text("minimal cluster size:" + minClusterSize);
+        document.getElementById('minClusterSize').value = minClusterSize;
+        localStorage.setItem("minClusterSize", minClusterSize);
+        all_density();
+      })
+    </script>
+  </body>
+</html>
+

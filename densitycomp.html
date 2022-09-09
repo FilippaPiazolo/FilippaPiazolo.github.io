@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>VNGS</title>
+  </head>
+  <body>
+    
+    <div class="navbar-fixed">
+      <nav class="nav-wrapper indigo">
+        <a href="#" class="sidenav-trigger show-on-large" data-target="mobile-links">
+          <i class="material-icons">menu</i>
+        </a>
+        <div class="container">
+          <a href="#" class="brand-logo center">Density comparison</a>
+          <div class="right">
+            <button class="btn btn-success" id="save_as_svg" value="">
+              <a id="downloadLink" href="#" download="density_comparison.svg" style="font-size : 20px; color: white;" class="right" title="Download Image">
+                <i class="fa fa-download"></i>
+              </a>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  
+    <!-- make the side navigation here: include links when they are ready-->
+    <ul class="sidenav" id="mobile-links">
+      <li><a href="index.html">Main page</a></li>
+      <li><a href="configurations.html">Configurations</a></li>
+      <li><a href="datavis.html">Visualise data</a></li>
+      <li><a href="densityvis.html">Density visualisation</a></li>
+      <li><a href="">Density comparison</a></li>
+    </ul>
+
+    <!-- -->
+    <div class="row">
+      <div class="container" style="width:90%">
+        <div class="row">
+          <p> <!-- Hier kommt die Beschreibung der Seite hin, was man hier machen kann -->
+            Here you can compare the distribution between different datasets/experiments. The density of one dataset is marked red. The other one is green. This results in yellow areas if the density is similar.
+          </p>
+        </div>
+      
+
+      <!-- hir brachen wir auch ein svg und zwei selections um Daten auszuwählen, evtl. noch eine farbenblinde Version gestalten -->
+
+      <div class="col s8 push-s4">
+        <div class="col s12">
+          <svg width="100%" id="datacomp"></svg>
+        </div>
+      </div>
+      <div class="col s4 pull-s8">
+        <!--span class="flow-text">Select datasets that you want to compare.</span-->
+        
+        <div class="row">
+          <ul class="collapsible">
+            <li>
+              <div class="collapsible-header" id="binSize_head">bin size: 500000</div>
+              <div class="collapsible-body">
+                <span>changes the size of the bars in the histogram and the size of the grayscaled bins on the chromosomes</span>
+                <p class="range-field">  
+                  <input type="range" min="500000" max="10000000" step="500" value="500000" v-model="nodeSize" id="binSize"/> 
+                  <input type="number" min="500000" max="10000000" step="500" value="500000" class="validate" id="binSize_text"/> 
+                </p>
+              </div>
+            </li>
+            <li>
+              <div class="collapsible-header" id="bandwith_head">bandwith: 2000000</div>
+              <div class="collapsible-body">
+                <span>is needed for kernel density estimation, defines how smooth the graph is</span>
+                <p class="range-field">  
+                  <input type="range" min="100000" max="6000000" step="500" value="2000000" v-model="nodeSize" id="bandwith"/> 
+                  <input type="number" min="100000" max="6000000" step="500" value="2000000" class="validate" id="bandwith_text"/> 
+                </p>
+              </div>
+            </li>
+            <li>
+              <div class="collapsible-header" id="amplitude_head">amplitude: 100000000</div>
+              <div class="collapsible-body">
+                <span>changes the amplitude of the kernel function and in result the amplitude of the graph and the darkness of the grayscale</span>
+                <p class="range-field">  
+                  <input type="range" min="3000000" max="1000000000" step="5000" value="100000000" v-model="nodeSize" id="amplitude"/> 
+                  <input type="number" min="3000000" max="1000000000" step="5000" value="100000000" class="validate" id="amplitude_text"/> 
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <form action="#">
+          <div class="input-field col s12">
+            <select multiple id="select1"> 
+              <option value="" disabled selected>Choose your option</option>
+            </select>
+            <label><font color="red">Dataset/Experiment selection</font> </label>
+          </div>
+        </form>
+        <form action="#">
+          <div class="input-field col s12">
+            <select multiple id="select2">
+              <option value="" disabled selected>Choose your option</option>
+            </select>
+            <label><font color="green">Dataset/Experiment selection</font> </label>
+          </div>
+        </form>
+      </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="methods.js"></script>
+    <script src="datavis_mutations.js"></script>
+    <script src="densityvis.js"></script>
+    <script> //hier müssen alle Sachen refreshed werden, wenn Parameter,... sich verändern
+      $(document).ready(function(){ 
+        $('.sidenav').sidenav();
+        createSelectAll('select1');
+        $('select').formSelect();
+        createSelectAll('select2');
+        $('select').formSelect();
+        $('.collapsible').collapsible();
+        comparisonDensity()
+        //hier alle Parameter richtig setzen
+        var binSize = localStorage.getItem("binSize2"),
+          bandwith = localStorage.getItem("bandwith2"),
+          amplitude = localStorage.getItem("amplitude2");
+        if (binSize == null){
+          binSize = 500000;
+          localStorage.setItem("binSize2", binSize);
+        }
+        if (bandwith == null){
+          bandwith = 2000000;
+          localStorage.setItem("bandwith2", bandwith);
+        }
+        if (amplitude == null){
+          amplitude = 100000000;
+          localStorage.setItem("amplitude2", amplitude);
+        }
+        
+        $('#binSize_head').text("bin size: " + binSize);
+        document.getElementById('binSize_text').value = binSize;
+        document.getElementById('binSize').value = binSize;
+
+        $('#bandwith_head').text("bandwith: " + bandwith);
+        document.getElementById('bandwith_text').value = bandwith;
+        document.getElementById('bandwith').value = bandwith;
+
+        $('#amplitude_head').text("amplitude: " + amplitude);
+        document.getElementById('amplitude_text').value = amplitude;
+        document.getElementById('amplitude').value = amplitude;
+      });
+    </script>
+    <script>
+      $("#save_as_svg").click(function() { 
+          downloadSVG("datacomp", "downloadLink");
+      });
+
+      $('#select1').change(function(){
+        //refresh diagram datacomp
+        comparisonDensity();
+      })
+      $('#select2').change(function(){
+        //refresh diagram datacomp
+        comparisonDensity();
+      })
+      //slider change
+      $('#binSize').change(function(){
+        var binSize = $('#binSize').val();
+        $('#binSize_head').text("bin size: " + binSize);
+        document.getElementById('binSize_text').value = binSize;
+        localStorage.setItem("binSize2", binSize);
+        comparisonDensity();
+      })
+      $('#bandwith').change(function(){
+        var bandwith = $('#bandwith').val();
+        $('#bandwith_head').text("bandwith: " + bandwith);
+        document.getElementById('bandwith_text').value = bandwith;
+        localStorage.setItem("bandwith2", bandwith);
+        comparisonDensity();
+      })
+      $('#amplitude').change(function(){
+        var amplitude = $('#amplitude').val();
+        $('#amplitude_head').text("amplitude: " + amplitude);
+        document.getElementById('amplitude_text').value = amplitude;
+        localStorage.setItem("amplitude2", amplitude);
+        comparisonDensity();
+      })
+
+      //textbox change
+      $('#binSize_text').change(function(){
+        var binSize = $('#binSize_text').val();
+        $('#binSize_head').text("bin size: " + binSize);
+        document.getElementById('binSize').value = binSize;
+        localStorage.setItem("binSize1", binSize);
+        comparisonDensity();
+      })
+      $('#bandwith_text').change(function(){
+        var bandwith = $('#bandwith_text').val();
+        $('#bandwith_head').text("bandwith: " + bandwith);
+        document.getElementById('bandwith').value = bandwith;
+        localStorage.setItem("bandwith1", bandwith);
+        comparisonDensity();
+      })
+      $('#amplitude_text').change(function(){
+        var amplitude = $('#amplitude_text').val();
+        $('#amplitude_head').text("amplitude: " + amplitude);
+        document.getElementById('amplitude').value = amplitude;
+        localStorage.setItem("amplitude1", amplitude);
+        comparisonDensity();
+      })
+    </script>
+
+  </body>
+</html>
+

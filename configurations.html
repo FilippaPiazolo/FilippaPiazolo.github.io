@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+  <title>VNGS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    
+  <!-- top bar -->
+  <div class="navbar-fixed">
+    <nav class="nav-wrapper indigo">
+      <a href="#" class="sidenav-trigger show-on-large" data-target="mobile-links">
+        <i class="material-icons">menu</i>
+      </a>
+      <div class="container" style="width:95%">
+        <a href="#" class="brand-logo center">Configurations</a>
+        <a id="downloadLink" href="#" download="configuration.txt" style="font-size : 20px; color: white;" class="right" title="Download Configurations and Parameter Settings">
+          <i class="fa fa-download"></i>
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- side navigation -->
+  <ul class="sidenav" id="mobile-links">
+    <li><a href="index.html">Main page</a></li>
+    <li><a href="">Configurations</a></li>
+    <li><a href="datavis.html">Visualise data</a></li>
+    <li><a href="densityvis.html">Density visualisation</a></li>
+    <li><a href="densitycomp.html">Density comparison</a></li>
+  </ul>
+
+  <!-- here the datafiles can be uploaded and the configurations can be set -->
+  <div class="row">
+    <div class="container" style="width:90%">
+      <div class="row">
+        <p>
+          Here general configurations can be set and two different datasets each with up to six different experiments can be uploaded. Both datasets must have the following file structure.
+          Also make sure, that the datasets use the same genome type and genome reference.</p>
+      </div>
+      <div class="divider"></div>
+
+      <!-- configurations first dataset -->
+      <div class = "row" action="#">
+        <h6>Setup Datafile 1</h6>
+        <form class = "col s12" method="POST">
+          <div class = "row">
+            <!-- upload txt file -->
+            <div class="file-field input-field col s6">
+              <div class="btn">
+                <span>Browse</span>
+                <input type = "file" id="data1" accept=".csv"/>
+              </div>
+              <!-- TO DO: Hier soll der Filename immernoch angezeigt werden, wenn ein File hochgeladen wurde -->
+              <div class = "file-path-wrapper" id="datafile1">
+                <input class = "file-path validate" type = "text" placeholder = "Upload file" />
+              </div>
+            </div>
+
+            <!-- set type of data -->
+            <div class="input-field col s6">
+              <select id="data1_type">
+                <option value="pm" selected>point mutation</option>
+                <option value="gr">genomic region</option>
+              </select>
+              <label>Type of data</label>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- configurations second dataset -->
+      <div class = "row" action="#">
+        <h6>Setup Datafile 2</h6>
+        <form class = "col s12" method="POST">
+          <div class = "row">
+            <!-- upload txt file -->
+            <div class = "file-field input-field col s6">
+              <div class = "btn">
+                <span>Browse</span>
+                <input type = "file" id="data2" accept=".csv"/>
+              </div>
+              <div class = "file-path-wrapper" id="datafile2">
+                <input class = "file-path validate" type = "text" placeholder = "Upload file" />
+              </div>
+            </div>
+
+            <!-- set type data -->
+            <div class="input-field col s6">
+              <select id="data2_type">
+                <option value="pm" selected>point mutation</option>
+                <option value="gr">genomic region</option>
+              </select>
+              <label>Type of data</label>
+            </div>
+          </div>
+        </form>       
+      </div>
+      <div class="divider"></div>
+
+      <!-- set genome type and reference-->
+      <div class="row" action="#">
+        <h6>Genome type and reference for datafile 1 and datafile 2</h6>
+        <div class="input-field col m6 s6">
+          <select id="genomeType">
+            <option value="human" selected>human</option>
+            <option value="mouse">mouse</option>
+          </select>
+          <label>Genome type</label>
+        </div>
+        <div class="input-field col m6 s6">
+          <select id="genomeRef">
+            <option value="hg19">GRCh37/hg19</option>
+            <option value="hg38">GRCh38/hg38</option>
+            <option value="mm10">GRCm38/mm10</option>
+            <option value="mm39">GRCm39/mm39</option>
+          </select>
+          <label>Genome reference</label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- configurations second dataset -->
+      <div class = "row" action="#">
+        <h6>Configuration File upload for Parameter Settings</h6>
+        <form class = "col s12" method="POST">
+          <div class = "row">
+            <!-- upload txt file -->
+            <div class = "file-field input-field col s6">
+              <div class = "btn">
+                <span>Browse</span>
+                <input type = "file" id="config" accept=".txt"/>
+              </div>
+              <div class = "file-path-wrapper" id="configfile">
+                <input class = "file-path validate" type = "text" placeholder = "Upload file" />
+              </div>
+            </div>
+          </div>
+        </form>       
+      </div>
+
+      <div class="divider"></div>
+
+      <div  class="row">
+        <h6>Input file</h6>
+        <p>A .cvs-file is accepted as the data input. The file must be tab-delimited. Following headers are accepted:</p>
+        <table>
+          <tr>
+            <th>Header</th>
+            <th>Required</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>chr</td>
+            <td>yes</td>
+            <td>chromosome number (e.g. chr1)</td>
+          </tr>
+          <tr>
+            <td>pos</td>
+            <td>yes, if SNP</td>
+            <td>base pair location of the SNP/point mutation</td>
+          </tr>
+          <tr>
+            <td>start</td>
+            <td>yes, if genomic region</td>
+            <td>starting location of the genomic region</td>
+          </tr>
+          <tr>
+            <td>end</td>
+            <td>yes, if genomic region</td>
+            <td>ending location of the genomic region</td>
+          </tr>
+          <tr>
+            <td>sample</td>
+            <td>no</td>
+            <td>specify experiment/sample if multiple samples are stored in one file</td>
+          </tr>
+          <tr>
+            <td>GENE</td>
+            <td>no</td>
+            <td>specify which gene is effected by the SNP</td>
+          </tr>
+        </table>
+        <p>The file can contain other headers. But they will be ignored.</p>
+        <h6>Type of data</h6>
+        <p>Select whether the entries are point mutations or genomic regions.</p>
+        <h6>Genome Type</h6>
+        <p>Select the human or mouse genome. The entries in the chr collums need to match the chromosome ids form the selected genome.</p>
+        <h6>Genome reference</h6>
+        <p>The genome reference is needed for the correct linking to the UCSC genome browser.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src= "https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script> //hier müssen alle Sachen aktiviert werden
+    $(document).ready(function(){ 
+      $('.sidenav').sidenav();
+      $('select').formSelect();
+    });
+  </script>
+  <script>
+    //upload dataset 1 and convert into right format
+    const data_input1 = document.querySelector("#data1");
+    var dataset1 = [];
+    var samples1 = [];
+    data_input1.addEventListener("change", function(){
+      //save data
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        var tmp = convert_data(reader.result);
+        dataset1 = tmp[0];
+        samples1 = tmp[1];
+        localStorage.setItem("data1", JSON.stringify(dataset1));
+        localStorage.setItem("samples1", JSON.stringify(samples1));
+        //change number of mutations
+        localStorage.setItem("numdata1", dataset1.length);
+      });
+      reader.readAsText(this.files[0]);
+    });
+
+    //upload dataset 2 and convert into right format
+    const data_input2 = document.querySelector("#data2");
+    var dataset2 = [];
+    var samples2 = [];
+    data_input2.addEventListener("change", function(){
+      //save data
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        var tmp =  convert_data(reader.result);
+        dataset2 = tmp[0];
+        samples2 = tmp[1];
+        localStorage.setItem("data2", JSON.stringify(dataset2));
+        localStorage.setItem("samples2", JSON.stringify(samples2));
+        //change number of mutations
+        localStorage.setItem("numdata2", dataset2.length);
+      });
+      reader.readAsText(this.files[0]);
+    });
+
+    //selection of datatype for dataset 1
+    var data1_type = localStorage.getItem("datatype1");
+    if (data1_type == null) {
+      data1_type = "pm";
+    }
+    document.querySelector("#data1_type option[value="+data1_type+"]").setAttribute('selected', 'selected');
+    const data1_select = document.querySelector("#data1_type");
+    data1_select.addEventListener("change", function(){
+      data1_type = data1_select.value;
+      localStorage.setItem("datatype1", data1_type);
+    });
+
+    //selection of datatype for dataset 2
+    var data2_type = data2_type = localStorage.getItem("datatype2");
+    if (data2_type == null){
+      data2_type = "pm";
+    }
+    document.querySelector("#data2_type option[value="+data2_type+"]").setAttribute('selected', 'selected');
+    const data2_select = document.querySelector("#data2_type");
+    data2_select.addEventListener("change", function(){
+      data2_type = data2_select.value;
+      localStorage.setItem("datatype2", data2_type);
+    });
+
+    //selection of genome type for both datasets
+    var genomeType = localStorage.getItem("genomeType");
+    if (genomeType == null) {
+      genomeType = "human";
+    }
+    document.querySelector("#genomeType option[value="+genomeType+"]").setAttribute('selected', 'selected');
+    const type_select = document.querySelector("#genomeType");
+    type_select.addEventListener("change", function(){
+      genomeType = type_select.value;
+      localStorage.setItem("genomeType", genomeType);
+    });
+
+    //selection of genome reference for both datasets
+    var genomeRef = localStorage.getItem("genomeRef");
+    if(genomeRef == null) {
+      genomeRef = "hg19";
+    }
+    document.querySelector("#genomeRef option[value="+genomeRef+"]").setAttribute('selected', 'selected');
+    const ref_select = document.querySelector("#genomeRef");
+    ref_select.addEventListener("change", function(){
+      genomeRef = ref_select.value;
+      localStorage.setItem("genomeRef", genomeRef);
+    });
+
+    //upload configuration file to set parameters
+    const config_input = document.querySelector("#config");
+    config_input.addEventListener("change", function(){
+      //save data
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setConfigurations(reader.result);
+        window.location.reload();
+      });
+      reader.readAsText(this.files[0]);
+    });
+
+  </script>
+  <!-- To Do: wie kann man local Storage wieder löschen? Cookie Setting mit einbauen! -->
+  <script src="methods.js"></script>
+  <script>
+    // write Configurations and Settings in txt-file
+
+    // Generate the file download URL and assign it to the link
+    // Wait until the page has loaded! Otherwise the download link element will not exist
+    window.addEventListener("load", function(){
+        document.getElementById('downloadLink').href = generateTextFileUrl(
+          'Configuration:\n' +
+          'datatype1: ' + localStorage.getItem("datatype1") + '\n' +
+          'datatype2: ' + localStorage.getItem("datatype2") + '\n' +
+          'genomeType: ' + localStorage.getItem("genomeType") + '\n' +
+          'genomeRef: ' + localStorage.getItem("genomeRef") + '\n\n' +
+          'ParametersDensityVisualisation:\n' +
+          'binSize1: ' + localStorage.getItem("binSize1") + '\n' +
+          'bandwith1: ' + localStorage.getItem("bandwith1") + '\n' +
+          'amplitude1: ' + localStorage.getItem("amplitude1") + '\n' +
+          'numMut: ' + localStorage.getItem("numMut") + '\n' +
+          'cluster: ' + localStorage.getItem("cluster") + '\n' +
+          'minClusterSize: ' + localStorage.getItem("minClusterSize") + '\n\n' +
+          'ParametersDensityComparison:\n' +
+          'binSize2: ' + localStorage.getItem("binSize2") + '\n' +
+          'bandwith2: ' + localStorage.getItem("bandwith2") + '\n' +
+          'amplitude2: ' + localStorage.getItem("amplitude2") + '\n'
+          );
+    });
+  </script>
+</body>
+</html>
+

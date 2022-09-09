@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <title>VNGS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    
+    <div class="navbar-fixed">
+      <nav class="nav-wrapper indigo">
+        <a href="#" class="sidenav-trigger show-on-large" data-target="mobile-links">
+          <i class="material-icons">menu</i>
+        </a>
+        <div class="container">
+          <a href="#" class="brand-logo center">Data visualisation</a>
+          <div class="right">
+            <button class="btn btn-success" id="save_as_svg" value="">
+              <a id="downloadLink" href="#" download="datavis.svg" style="font-size : 20px; color: white;" class="right" title="Download Image">
+                <i class="fa fa-download"></i>
+              </a>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  
+    <!-- make the side navigation here: include links when they are ready-->
+    <ul class="sidenav" id="mobile-links">
+      <li><a href="index.html">Main page</a></li>
+      <li><a href="configurations.html">Configurations</a></li>
+      <li><a href="">Visualise data</a></li>
+      <li><a href="densityvis.html">Density visualisation</a></li>
+      <li><a href="densitycomp.html">Density comparison</a></li>
+    </ul>
+
+    <!-- -->
+    <div class="row">
+      <div class="container">
+        <div class="row">
+          <p> <!-- Hier kommt die Beschreibung der Seite hin, was man hier machen kann -->
+            Select datasets or experiments that should be annotated on the chromosomes.
+          </p>
+        </div>
+      </div>
+      <div class="divider"></div>
+    </div>
+    <div class="row">
+      <div class="container" style="width:90%">
+        <!-- evtl. ist es sinnvoll eine Datei mit allen Funktionen zu erstellen und diese dann entsprechend in die html-files einzubinden... -->
+        <div class="col s9 push-s3">
+          <!-- hier muss svg fürs Diagramm eingefügt werden welches sich automatisch aktualisiert, wenn checkboxes verändert werden -->
+          <span class="flow-text"> </span>
+          <svg width="100%" id="datavis"></svg>
+        </div>
+        <div class="col s3 pull-s9">
+          <!-- hier müssen die Checkboxes entsprechend der hochgeladenen Daten erstellt werden: Try and Catch Block verwenden! -->
+          <span class="flow-text">Datasets / Experiments:</span>
+          <form action="#" id="checkboxes"></form>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="methods.js"></script>
+    <script src="datavis_mutations.js"></script>
+    <script>
+      $(document).ready(function(){ 
+        $('.sidenav').sidenav();
+        createCheckboxesDataVis();
+        draw_svg();
+      });
+      $('#checkboxes').change(function(){
+        d3.select("#datavis").select("g").remove();
+        draw_svg();
+
+      })
+      $("#save_as_svg").click(function() { 
+          downloadSVG("datavis", "downloadLink");
+      });
+    </script>
+  </body>
+</html>
+

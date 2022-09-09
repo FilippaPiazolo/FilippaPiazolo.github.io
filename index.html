@@ -1,42 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <!--Import Google Icon Font-->
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!-- Compiled and minified CSS -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-      <title>VNGS</title>
-    </head>
-    <body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <title>VNGS</title>
+    <style type="text/css">
+      /* Style the lines by removing the fill and applying a stroke */
+      .overlay {
+        fill: none;
+        pointer-events: all;
+      }
+    </style>
+  </head>
+  <body>
     
-      <div class="navbar-fixed">
-        <nav class="nav-wrapper indigo">
-          <div class="container">
-            <a href="#" class="brand-logo center">Visualisation of NGS data</a>
-            <a href="#" class="sidenav-trigger show-on-large" data-target="mobile-links">
-              <i class="material-icons">menu</i>
-            </a>
+    <div class="navbar-fixed">
+      <nav class="nav-wrapper indigo">
+        <a href="#" class="sidenav-trigger show-on-large" data-target="mobile-links">
+          <i class="material-icons">menu</i>
+        </a>
+        <div class="container">
+          <a href="#" class="brand-logo center">Visualisation of NGS data</a>
+        </div>
+      </nav>
+    </div>
+  
+    <!-- make the side navigation here: include links when they are ready-->
+    <ul class="sidenav" id="mobile-links">
+      <li><a href="">Main page</a></li>
+      <li><a href="configurations.html">Configurations</a></li>
+      <li><a href="datavis.html">Visualise data</a></li>
+      <li><a href="densityvis.html">Density visualisation</a></li>
+      <li><a href="densitycomp.html">Density comparison</a></li>
+    </ul>
+
+    
+    <!-- -->
+    <div class="container" style="width:90%">
+      <div class="row">
+        <!-- general information -->
+        <div class="col s12">
+          <div class="card-panel indigo lighten-4">
+            <span class="text">
+              This tool is an interactive visualisation of phenotyps (human and mouse) that have been associates with SNPs or other locations along the genome. 
+              The visualisation includes the annotation of each SNP and also the density distribution of all SNPs on the chromosomes. 
+              Using the density distribution clusters can be automatically defined by giving extra prerequisits, such as minimum cluster size and minimum number of included SNPs and a threshold value of the kde-score.
+              The density between different datasets and experiments can also be visually compared to each other.
+            </span>
           </div>
-        </nav>
+        </div>
+        <!-- configuration TO-DO: anderes Bild hinzufügen-->
+        <div class="col s12 l6">
+          <div class="card medium">
+            <div class="card-image waves-effect waves-block waves-light">
+              <img class="activator" src="images/mutations.svg">
+            </div>
+            <div class="card-content">
+              <span class="card-title activator grey-text text-darken-4">Configurations<i class="material-icons right">more_vert</i></span>
+              <p><a href="configurations.html">Change Configuration.</a></p>
+            </div>
+            <div class="card-reveal">
+              <span class="card-title grey-text text-darken-4">Configurations<i class="material-icons right">close</i></span>
+              <p>Here two files of datasets with each up to six different experiments can be uploaded. Also other configurations such as genome type or reference genome can be set here. 
+                On this page the configuration and parameter settings can be downloaded and uploaded in the next session.</p>
+            </div>
+          </div>
+        </div> 
+        <!-- data visualisation -->
+        <div class="col s12 l6">
+          <div class="card medium">
+            <div class="card-image waves-effect waves-block waves-light">
+              <img class="activator" src="images/mutations.svg">
+            </div>
+            <div class="card-content">
+              <span class="card-title activator grey-text text-darken-4">Data Visualisation<i class="material-icons right">more_vert</i></span>
+              <p><a href="datavis.html">See SNP/genomic annotations.</a></p>
+            </div>
+            <div class="card-reveal">
+              <span class="card-title grey-text text-darken-4">Data Visualisation<i class="material-icons right">close</i></span>
+              <p>Here the SNPs and other locations on the genome are visualised as colored lines on the chromosomes. Different experiments and datasets can be selected via checkboxes.</p>
+            </div>
+          </div>
+        </div> 
+        <!-- density visualisation -->
+        <div class="col s12 l6">
+          <div class="card medium">
+            <div class="card-image waves-effect waves-block waves-light">
+              <img class="activator" src="images/density.svg">
+            </div>
+            <div class="card-content">
+              <span class="card-title activator grey-text text-darken-4">Density Visualisation<i class="material-icons right">more_vert</i></span>
+              <p><a href="densityvis.html">View density distribution and clusters.</a></p>
+            </div>
+            <div class="card-reveal">
+              <span class="card-title grey-text text-darken-4">Density Visualisation<i class="material-icons right">close</i></span>
+              <p>Using kernel density estimation with the Epachnikov kernel we can define the density distribution from the given SNPs. 
+                Througth sliders the parameters of the calculation can be changed. The denisty is than used to define clusters. For details of the cluster a link to the UCSC genome browser is included.</p>
+            </div>
+          </div>
+        </div> 
+        <!-- density comparison -->
+        <div class="col s12 l6">
+          <div class="card medium">
+            <div class="card-image waves-effect waves-block waves-light">
+              <img class="activator" src="images/comparison.svg">
+            </div>
+            <div class="card-content">
+              <span class="card-title activator grey-text text-darken-4">Density Comparison<i class="material-icons right">more_vert</i></span>
+              <p><a href="densitycomp.html">Compare density distribution between datasets.</a></p>
+            </div>
+            <div class="card-reveal">
+              <span class="card-title grey-text text-darken-4">Density Comparison<i class="material-icons right">close</i></span>
+              <p>Here the density between two different dataset or experiments can be compared. The desnity of one dataset is green and the other one is red. 
+                When the density of both datasets on an area of the chromosome is similar it gets yellow.</p>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <div class="row">
+        <div class="col s12">
+          <a class="waves-effect waves-light indigo btn modal-trigger" href="#modal1" id="cookie" >Cookie Consent</a>
+        </div>
+      </div>
+     
+
+
+    </div>
+
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h4>Cookie Consent</h4>
+        <p>Put something about the cookie settings here.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" target="_blank">More info</a> <!-- hier noch den richtigen Link hinzufügen -->
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div>
+    </div>
+
+
+    <footer class="page-footer indigo lighten-2">
+      <div class="container">
+        <div class="row">
+          <div class="col s6">
+            <h5 class="white-text">Company Bio</h5>
+            <p class="grey-text text-lighten-4">
+              We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.
+            </p>
+          </div>
+          <div class="col s3">
+            <h5 class="white-text">Settings</h5>
+            <ul>
+              <li><a class="white-text" href="#!">Link 1</a></li>
+              <li><a class="white-text" href="#!">Link 2</a></li>
+            </ul>
+          </div>
+          <div class="col s3">
+            <h5 class="white-text">Connect</h5>
+            <ul>
+              <li><a class="white-text" href="#!">Link 1</a></li>
+              <li><a class="white-text" href="#!">Link 2</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
     
-      <ul class="sidenav" id="mobile-links">
-        <li><a href="">Configurations</a></li>
-        <li><a href="">Visualise data</a></li>
-        <li><a href="">Density visualisation</a></li>
-        <li><a href="">Density comparison</a></li>
-      </ul>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script> //hier müssen alle Sachen refreshed werden, wenn Parameter,... sich verändern
+      $(document).ready(function(){ 
+        $('.modal').modal();
+        //Cookie Consent
+        setTimeout(function () {
+          $("#cookie").fadeIn(200);
+        }, 4000);
+        $(".modal-close").click(function() {
+           $("#cookie").fadeOut(200);
+        }); 
+        //Side navigation
+        $('.sidenav').sidenav();
+      });
+    </script>
+    <script>
+      //$(window).onbeforeunload(function(){
+        //localStorage.clear(); -->sessionStorage verwenden, dann werden Daten direkt nach Schließen gelöscht
+      //});
+
       
-      <!-- Compiled and minified JavaScript -->
-      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-      <script>
-        $(document).ready(function(){
-          $('.sidenav').sidenav();
-        });
-      </script>
-    </body>
-    </html>
+    </script>
+
+  </body>
+</html>
+
