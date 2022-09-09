@@ -771,6 +771,7 @@ function all_density(){
 
   var cluster = define_cluster(parseFloat(clusterThreshold), parseInt(minClusterSize), allDensity, allGene, allMutNum);
   
+  console.log(numberChr)
   //draw chromosome diagram of clicked chromosome
   draw_diagram_chr(numberChr+1, data_genome, allBins[numberChr], allDensity[numberChr])
 
