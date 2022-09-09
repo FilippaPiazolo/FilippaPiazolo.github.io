@@ -732,8 +732,10 @@ function all_density(){
     data_genome,
     centromere;
 
+  console.log(genome)
   if (genome == null) //genome wurde noch nicht gesetzt
     genome = "human";
+
   if(genome == "human"){
     data_genome = human_genome;
     centromere = human_centromere;
