@@ -144,7 +144,7 @@ function draw_comparison_all(data_genome, centromere,dataA, dataB)
     height = width*1.4,
     c_width = width/50,
     distance_c = c_width*2,
-    c_factor = 300000,
+    c_factor = 320000,
     centromere_x = c_width/5,
     centromere_y = c_width/2;
 
@@ -696,6 +696,7 @@ function filter_mutations(chr_number, data){ //filter dataset by mutations
 }
 
 
+//fertig
 function all_density(){
   d3.select("#densvisChr").selectAll("g").remove();
   d3.select("#densvisChr").selectAll("rect").remove();

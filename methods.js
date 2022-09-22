@@ -233,7 +233,7 @@ function createCheckboxesDataVis(){
   var sample2 = JSON.parse(localStorage.getItem('samples2'));
   var data1 = JSON.parse(localStorage.getItem('data1'));
   var data2 = JSON.parse(localStorage.getItem('data2'));
-  
+
   if (data1.length != 0){
     if (sample1.length == 0){
       createCheckbox("Dataset1", color1[0]);
@@ -290,9 +290,12 @@ function createCheckbox(id, color){
 function createSelectAll(id){
   var sample1 = JSON.parse(localStorage.getItem('samples1'));
   var sample2 = JSON.parse(localStorage.getItem('samples2'));
-
-  createSelect("Dataset1", sample1, id);
-  createSelect("Dataset2", sample2, id);
+  var data1 = JSON.parse(localStorage.getItem('data1'));
+  var data2 = JSON.parse(localStorage.getItem('data2'));
+  if(data1.length != 0)
+    createSelect("Dataset1", sample1, id);
+  if(data2.length != 0)
+    createSelect("Dataset2", sample2, id);
 }
 
 

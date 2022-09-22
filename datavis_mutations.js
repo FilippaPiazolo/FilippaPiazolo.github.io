@@ -208,11 +208,25 @@ function draw_specific_mutations(experement_data, g, color, distance_c, c_width,
         let positionEnd = experement_data[i].end/c_factor;
         if (positionEnd < genome[chr-1].size/c_factor){ //only genomic regions on the chromosomes are visualised
           //müssen noch am Centromer angepasst werden!
-          let polygon = String((chr-1)*distance_c) + " " + String(positionStart) + ", " + 
-            String((chr-1)*distance_c) + " " + String(positionEnd) + ", " +
-            String((chr-1)*distance_c + c_width) + " " + String(positionEnd) + ", " + 
-            String((chr-1)*distance_c + c_width) + " " + String(positionStart)+ ", " + 
-            String((chr-1)*distance_c) + " " + String(positionStart);
+          let distance_left_start = (chr-1)*distance_c;
+          let distance_right_start = (chr-1)*distance_c;
+          let distance_left_end = (chr-1)*distance_c + c_width;
+          let distance_right_end = (chr-1)*distance_c + c_width;
+          if ((positionStart > (centromere[chr-1] - centromere_y))  && (positionStart < (centromere[chr-1] + centromere_y))){
+            let tmp = length_mutation_centromere(centromere[chr-1], centromere_x, centromere_y, positionStart)
+            distance_left_start += tmp;
+            distance_right_start -= tmp;
+          }
+          if ((positionEnd > (centromere[chr-1] - centromere_y))  && (positionEnd < (centromere[chr-1] + centromere_y))){
+            let tmp = length_mutation_centromere(centromere[chr-1], centromere_x, centromere_y, positionEnd)
+            distance_left_end += tmp;
+            distance_right_end -= tmp;
+          }
+          let polygon = String(distance_left_start) + " " + String(positionStart) + ", " + 
+            String(distance_left_end) + " " + String(positionEnd) + ", " +
+            String(distance_right_end) + " " + String(positionEnd) + ", " + 
+            String(distance_right_start) + " " + String(positionStart)+ ", " + 
+            String(distance_left_start) + " " + String(positionStart);
           g.append("polyline")
             .attr("points", polygon) 
             .style("stroke", color)
