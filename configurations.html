@@ -45,6 +45,47 @@
       </div>
       <div class="divider"></div>
 
+      <!-- defining header -->
+      <div class = "row" action="#">
+        <h6>Define header for both datafiles</h6>
+        <form class = "col s12" method="POST">
+          <div class = "row">
+            <div class="input-field col s3">
+              <input placeholder="chr" id="h_chr" type="text" class="validate">
+              <label for="h_chr">Chromosome number</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="pos" id="h_pos" type="text" class="validate">
+              <label for="h_pos">Position of SNP</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="start" id="h_start" type="text" class="validate">
+              <label for="h_start">Start of genomic region</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="end" id="h_end" type="text" class="validate">
+              <label for="h_end">End of genomic region</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s3">
+              <input placeholder="sample" id="h_sample" type="text" class="validate">
+              <label for="h_sample">Sample/Experiments</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="GENE" id="h_gene" type="text" class="validate">
+              <label for="h_gene">Effected genes</label>
+            </div>
+            <div class="col push-s3">
+              <a class="waves-effect waves-light btn" id="header">set header</a>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+      <div class="divider"></div>
+
       <!-- configurations first dataset -->
       <div class = "row" action="#">
         <h6>Setup Datafile 1</h6>
@@ -57,8 +98,8 @@
                 <input type = "file" id="data1" accept=".csv"/>
               </div>
               <!-- TO DO: Hier soll der Filename immernoch angezeigt werden, wenn ein File hochgeladen wurde -->
-              <div class = "file-path-wrapper" id="datafile1">
-                <input class = "file-path validate" type = "text" placeholder = "Upload file" />
+              <div class = "file-path-wrapper" >
+                <input class = "file-path validate" type = "text" placeholder = "Upload file" id="datafile1"/>
               </div>
             </div>
 
@@ -85,8 +126,8 @@
                 <span>Browse</span>
                 <input type = "file" id="data2" accept=".csv"/>
               </div>
-              <div class = "file-path-wrapper" id="datafile2">
-                <input class = "file-path validate" type = "text" placeholder = "Upload file" />
+              <div class = "file-path-wrapper">
+                <input class = "file-path validate" type = "text" placeholder = "Upload file" id="datafile2"/>
               </div>
             </div>
 
@@ -205,31 +246,110 @@
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src= "https://d3js.org/d3-color.v1.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="methods.js"></script>
   <script> //hier müssen alle Sachen aktiviert werden
     $(document).ready(function(){ 
       $('.sidenav').sidenav();
       $('select').formSelect();
 
       if(localStorage.getItem("data1") == null){
-        console.log(1)
         localStorage.setItem("data1", JSON.stringify([]));
         localStorage.setItem("samples1", JSON.stringify([]));
         localStorage.setItem("numdata1", 0);
       }
       if(localStorage.getItem("data2") == null){
-        console.log(2)
         localStorage.setItem("data2", JSON.stringify([]));
         localStorage.setItem("samples2", JSON.stringify([]));
         localStorage.setItem("numdata2", 0);
       }
+      var tmp = localStorage.getItem("h_chr");
+      if(tmp == null)
+        tmp = document.getElementById("h_chr").placeholder
+      $('#h_chr').attr("placeholder", tmp);
+
+      tmp = localStorage.getItem("h_pos");
+      if(tmp == null)
+        tmp = document.getElementById("h_pos").placeholder
+      $('#h_pos').attr("placeholder", tmp);
+
+      tmp = localStorage.getItem("h_start");
+      if(tmp == null)
+        tmp = document.getElementById("h_start").placeholder
+      $('#h_start').attr("placeholder", tmp);
+
+      tmp = localStorage.getItem("h_end");
+      if(tmp == null)
+        tmp = document.getElementById("h_end").placeholder
+      $('#h_end').attr("placeholder", tmp);
+
+      tmp = localStorage.getItem("h_sample");
+      if(tmp == null)
+        tmp = document.getElementById("h_sample").placeholder
+      $('#h_sample').attr("placeholder", tmp);
+
+      tmp = localStorage.getItem("h_gene");
+      if(tmp == null)
+        tmp = document.getElementById("h_gene").placeholder
+      $('#h_gene').attr("placeholder", tmp);
     });
   </script>
   <script>
+    //set header
+    $('#header').click(function(){
+      //chromosome number
+      var el = document.getElementById("h_chr")
+      if (el.value == "") //no specific input --> take default (placeholder)
+        localStorage.setItem("h_chr", el.placeholder)
+      else  
+        localStorage.setItem("h_chr", el.value)
+
+      //position SNP
+      el = document.getElementById("h_pos")
+      if (el.value == "") //no specific input --> take default (placeholder)
+        localStorage.setItem("h_pos", el.placeholder)
+      else  
+        localStorage.setItem("h_pos", el.value)
+
+      //start positon genomic region
+      el = document.getElementById("h_start")
+      if (el.value == "") //no specific input --> take default (placeholder)
+        localStorage.setItem("h_start", el.placeholder)
+      else  
+        localStorage.setItem("h_start", el.value)
+
+      //end positon genomic region
+      el = document.getElementById("h_end")
+      if (el.value == "") //no specific input --> take default (placeholder)
+        localStorage.setItem("h_end", el.placeholder)
+      else  
+        localStorage.setItem("h_end", el.value)
+
+      //sample/experiment
+      el = document.getElementById("h_sample")
+      if (el.value == "") //no specific input --> take default (placeholder)
+        localStorage.setItem("h_sample", el.placeholder)
+      else  
+        localStorage.setItem("h_sample", el.value)
+      
+      //effected genes
+      el = document.getElementById("h_gene")
+      if (el.value == "") //no specific input --> take default (placeholder)
+        localStorage.setItem("h_gene", el.placeholder)
+      else  
+        localStorage.setItem("h_gene", el.value)
+    })
+
     //upload dataset 1 and convert into right format
+    var datafile1 = localStorage.getItem("datafile1");
+    if(datafile1 == null)
+      datafile1 = "Upload file"
+    $('#datafile1').attr("placeholder", datafile1);
+
     const data_input1 = document.querySelector("#data1");
     var dataset1 = [];
     var samples1 = [];
     data_input1.addEventListener("change", function(){
+      localStorage.setItem("datafile1", this.files[0].name);
       //save data
       const reader = new FileReader();
       reader.addEventListener("load", () => {
@@ -245,10 +365,16 @@
     });
 
     //upload dataset 2 and convert into right format
+    var datafile2 = localStorage.getItem("datafile2");
+    if(datafile2 == null)
+      datafile2 = "Upload file"
+    $('#datafile2').attr("placeholder", datafile2);
+
     const data_input2 = document.querySelector("#data2");
     var dataset2 = [];
     var samples2 = [];
     data_input2.addEventListener("change", function(){
+      localStorage.setItem("datafile2", this.files[0].name);
       //save data
       const reader = new FileReader();
       reader.addEventListener("load", () => {
@@ -322,14 +448,21 @@
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         setConfigurations(reader.result);
+        const file1 = localStorage.getItem("datafile1"),
+          file2 = localStorage.getItem("datafile2");
+        var text = "These file(s): "
+        if(file1 != null)
+          text += file1 + " (as datafile 1)";
+        if(file2 != null)
+          text += ", "+ file2 + " (as datafile 2)";
+        text += " need to be uploaded."
+        window.confirm(text);
         window.location.reload();
       });
       reader.readAsText(this.files[0]);
     });
 
   </script>
-  <!-- To Do: wie kann man local Storage wieder löschen? Cookie Setting mit einbauen! -->
-  <script src="methods.js"></script>
   <script>
     // write Configurations and Settings in txt-file
 
@@ -338,6 +471,14 @@
     window.addEventListener("load", function(){
         document.getElementById('downloadLink').href = generateTextFileUrl(
           'Configuration:\n' +
+          'h_chr: ' + localStorage.getItem("h_chr") + '\n' +
+          'h_pos: ' + localStorage.getItem("h_pos") + '\n' +
+          'h_start: ' + localStorage.getItem("h_start") + '\n' +
+          'h_end: ' + localStorage.getItem("h_end") + '\n' +
+          'h_sample: ' + localStorage.getItem("h_sample") + '\n' +
+          'h_gene: ' + localStorage.getItem("h_gene") + '\n' +
+          'datafile1:' + localStorage.getItem("datafile1") + '\n' +
+          'datafile2:' + localStorage.getItem("datafile2") + '\n' +
           'datatype1: ' + localStorage.getItem("datatype1") + '\n' +
           'datatype2: ' + localStorage.getItem("datatype2") + '\n' +
           'genomeType: ' + localStorage.getItem("genomeType") + '\n' +

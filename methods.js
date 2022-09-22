@@ -116,12 +116,20 @@ function convert_data(data) {
   var text = data.replaceAll("\"","");
   var ar = text.split("\n");
 
+  var chr = localStorage.getItem("h_chr");
+  var pos = localStorage.getItem("h_pos");
+  var start = localStorage.getItem("h_start");
+  var end = localStorage.getItem("h_end");
+  var gene = localStorage.getItem("h_gene");
+  var sample = localStorage.getItem("h_sample");
+
   var def = ar[0].split("\t");
-  var sampleIndex = def.indexOf("sample");
-  var chrIndex = def.indexOf("chr");
-  var posIndex = def.indexOf("pos");
-  var startIndex = def.indexOf("start");
-  var endIndex = def.indexOf("end");
+  var sampleIndex = def.indexOf(sample);
+  var chrIndex = def.indexOf(chr);
+  var posIndex = def.indexOf(pos);
+  var startIndex = def.indexOf(start);
+  var endIndex = def.indexOf(end);
+  var geneIndex = def.indexOf(gene);
 
   for(let i = 1; i<ar.length-1; i++){
     var res = ar[i].split("\t");
@@ -149,12 +157,27 @@ function convert_data(data) {
         if (samples.indexOf(samp) == -1){ //sample not in list
           samples.push(samp);
         }
-        obj = {
-          sample: samp, chr: chrNum, pos: startPos
+        if (geneIndex != -1) {
+          var genes = res[geneIndex];
+          obj = {
+            sample: samp, chr: chrNum, pos: startPos, gene: genes
+          }
+        } else {
+          obj = {
+            sample: samp, chr: chrNum, pos: startPos
+          }
         }
+        
       } else {
-        obj = {
-          chr: chrNum, pos: startPos
+        if (geneIndex != -1) {
+          var genes = res[geneIndex];
+          obj = {
+            sample: samp, pos: startPos, gene: genes
+          }
+        } else {
+          obj = {
+            sample: samp, pos: startPos
+          }
         }
       }
     } else if (startIndex != -1 && endIndex != -1){ //genomic region
@@ -165,12 +188,26 @@ function convert_data(data) {
         if (samples.indexOf(samp) == -1){ //sample not in list
           samples.push(samp);
         }
-        obj = {
-          sample: samp, chr: chrNum, start: startPos, end: endPos
+        if (geneIndex != -1){
+          var genes = res[geneIndex];
+          obj = {
+            sample: samp, chr: chrNum, start: startPos, end: endPos, gene: genes
+          }
+        } else {
+          obj = {
+            sample: samp, chr: chrNum, start: startPos, end: endPos
+          }
         }
       } else {
-        obj = {
-          chr: chrNum, start: startPos, end: endPos
+        if (geneIndex != -1){
+          var genes = res[geneIndex];
+          obj = {
+            chr: chrNum, start: startPos, end: endPos, gene: genes
+          }
+        } else {
+          obj = {
+            chr: chrNum, start: startPos, end: endPos
+          }
         }
       }
     }

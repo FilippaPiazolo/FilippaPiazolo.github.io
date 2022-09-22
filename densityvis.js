@@ -38,22 +38,6 @@ SLIDER IDs:
 */
 
 
-function _21(generate_text_cluster,resultsCluster,md)
-{
-  let text = generate_text_cluster(resultsCluster[1])
-  if ( text != ""){
-    return md`
-### Cluster and Gene
-| Cluster (Browser)| Chromosome | Gene  | Position  |
-| ------- | ---------- | ----- | -------------- |
-${text}
-    `
-  } else {
-    return md`select checkbox *show cluster* to see a list of all cluster`
-  }
-}
-
-
 //fertig
 function comparisonDensity(){
   d3.select("#datacomp").selectAll("g").remove();
@@ -518,8 +502,6 @@ function draw_density_all(data_genome, centromere, data, density, numMutations, 
     centromere_x = c_width/5,
     centromere_y = c_width/2;
 
-  var all_cluster = [];
-
   const svg = d3
       .select("#densvisAll")
       .attr("viewBox", [0, 0,width, height]),
@@ -840,7 +822,7 @@ function getBinDensity(data, chromosome, data_genome, numberOfAllMutations, widt
     for (let j = 0; j < bins[i].length; j++) {
       const mutation = bins[i][j];
       const data_chr = data.filter(x => x.chr === String(chromosome) && x.pos === String(mutation)),
-        data_gene = data_chr.map(data_chr => data_chr.GENE);
+        data_gene = data_chr.map(data_chr => data_chr.gene);
       geneBin.push(data_gene[0])
     }
     //remove duplicates
