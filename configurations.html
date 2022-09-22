@@ -45,6 +45,27 @@
       </div>
       <div class="divider"></div>
 
+      <!-- configurations second dataset -->
+      <div class = "row" action="#">
+        <h6>Configuration File upload for Parameter Settings</h6>
+        <form class = "col s12" method="POST">
+          <div class = "row">
+            <!-- upload txt file -->
+            <div class = "file-field input-field col s6">
+              <div class = "btn">
+                <span>Browse</span>
+                <input type = "file" id="config" accept=".txt"/>
+              </div>
+              <div class = "file-path-wrapper" id="configfile">
+                <input class = "file-path validate" type = "text" placeholder = "Upload file" />
+              </div>
+            </div>
+          </div>
+        </form>       
+      </div>
+
+      <div class="divider"></div>
+
       <!-- defining header -->
       <div class = "row" action="#">
         <h6>Define header for both datafiles</h6>
@@ -167,23 +188,11 @@
 
       <div class="divider"></div>
 
-      <!-- configurations second dataset -->
-      <div class = "row" action="#">
-        <h6>Configuration File upload for Parameter Settings</h6>
-        <form class = "col s12" method="POST">
-          <div class = "row">
-            <!-- upload txt file -->
-            <div class = "file-field input-field col s6">
-              <div class = "btn">
-                <span>Browse</span>
-                <input type = "file" id="config" accept=".txt"/>
-              </div>
-              <div class = "file-path-wrapper" id="configfile">
-                <input class = "file-path validate" type = "text" placeholder = "Upload file" />
-              </div>
-            </div>
-          </div>
-        </form>       
+      <div class="row">
+        <h6> </h6>
+        <div class="col">
+          <a class="waves-effect waves-light btn" id="save">save all configurations</a>
+        </div>
       </div>
 
       <div class="divider"></div>
@@ -193,7 +202,7 @@
         <p>A .cvs-file is accepted as the data input. The file must be tab-delimited. Following headers are accepted:</p>
         <table>
           <tr>
-            <th>Header</th>
+            <th>Default Header</th>
             <th>Required</th>
             <th>Description</th>
           </tr>
@@ -346,22 +355,9 @@
     $('#datafile1').attr("placeholder", datafile1);
 
     const data_input1 = document.querySelector("#data1");
-    var dataset1 = [];
-    var samples1 = [];
+    var file1;
     data_input1.addEventListener("change", function(){
-      localStorage.setItem("datafile1", this.files[0].name);
-      //save data
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        var tmp = convert_data(reader.result);
-        dataset1 = tmp[0];
-        samples1 = tmp[1];
-        localStorage.setItem("data1", JSON.stringify(dataset1));
-        localStorage.setItem("samples1", JSON.stringify(samples1));
-        //change number of mutations
-        localStorage.setItem("numdata1", dataset1.length);
-      });
-      reader.readAsText(this.files[0]);
+      file1 = this.files[0];
     });
 
     //upload dataset 2 and convert into right format
@@ -371,22 +367,9 @@
     $('#datafile2').attr("placeholder", datafile2);
 
     const data_input2 = document.querySelector("#data2");
-    var dataset2 = [];
-    var samples2 = [];
+    var file2;
     data_input2.addEventListener("change", function(){
-      localStorage.setItem("datafile2", this.files[0].name);
-      //save data
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        var tmp =  convert_data(reader.result);
-        dataset2 = tmp[0];
-        samples2 = tmp[1];
-        localStorage.setItem("data2", JSON.stringify(dataset2));
-        localStorage.setItem("samples2", JSON.stringify(samples2));
-        //change number of mutations
-        localStorage.setItem("numdata2", dataset2.length);
-      });
-      reader.readAsText(this.files[0]);
+      file2 = this.files[0];
     });
 
     //selection of datatype for dataset 1
@@ -396,12 +379,6 @@
       data1_type = "pm";
     }
     document.querySelector("#data1_type option[value="+data1_type+"]").setAttribute('selected', 'selected');
-    const data1_select = document.querySelector("#data1_type");
-    data1_select.addEventListener("change", function(){
-      data1_type = data1_select.value;
-      localStorage.setItem("datatype1", data1_type);
-    });
-
     //selection of datatype for dataset 2
     var data2_type = data2_type = localStorage.getItem("datatype2");
     if (data2_type == null){
@@ -409,11 +386,6 @@
       data2_type = "pm";
     }
     document.querySelector("#data2_type option[value="+data2_type+"]").setAttribute('selected', 'selected');
-    const data2_select = document.querySelector("#data2_type");
-    data2_select.addEventListener("change", function(){
-      data2_type = data2_select.value;
-      localStorage.setItem("datatype2", data2_type);
-    });
 
     //selection of genome type for both datasets
     var genomeType = localStorage.getItem("genomeType");
@@ -422,11 +394,6 @@
       genomeType = "human";
     }
     document.querySelector("#genomeType option[value="+genomeType+"]").setAttribute('selected', 'selected');
-    const type_select = document.querySelector("#genomeType");
-    type_select.addEventListener("change", function(){
-      genomeType = type_select.value;
-      localStorage.setItem("genomeType", genomeType);
-    });
 
     //selection of genome reference for both datasets
     var genomeRef = localStorage.getItem("genomeRef");
@@ -435,11 +402,6 @@
       genomeRef = "hg19";
     }
     document.querySelector("#genomeRef option[value="+genomeRef+"]").setAttribute('selected', 'selected');
-    const ref_select = document.querySelector("#genomeRef");
-    ref_select.addEventListener("change", function(){
-      genomeRef = ref_select.value;
-      localStorage.setItem("genomeRef", genomeRef);
-    });
 
     //upload configuration file to set parameters
     const config_input = document.querySelector("#config");
@@ -462,6 +424,65 @@
       reader.readAsText(this.files[0]);
     });
 
+    // save all configurations
+    $('#save').click(function(){
+      //datatype1
+      const data1_select = document.querySelector("#data1_type");
+      data1_type = data1_select.value;
+      localStorage.setItem("datatype1", data1_type);
+
+      //datatype2
+      const data2_select = document.querySelector("#data2_type");
+      data2_type = data2_select.value;
+      localStorage.setItem("datatype2", data2_type);
+
+      //genome type
+      const type_select = document.querySelector("#genomeType");
+      genomeType = type_select.value;
+      localStorage.setItem("genomeType", genomeType);
+
+      //genome reference
+      const ref_select = document.querySelector("#genomeRef");
+      genomeRef = ref_select.value;
+      localStorage.setItem("genomeRef", genomeRef);
+
+      //datafile1
+      var dataset1 = [];
+      var samples1 = [];
+      if(typeof file1 != 'undefined'){
+        localStorage.setItem("datafile1", file1.name);
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          var tmp = convert_data(reader.result);
+          dataset1 = tmp[0];
+          samples1 = tmp[1];
+          localStorage.setItem("data1", JSON.stringify(dataset1));
+          localStorage.setItem("samples1", JSON.stringify(samples1));
+          //change number of mutations
+          localStorage.setItem("numdata1", dataset1.length);
+        });
+        reader.readAsText(file1);
+      }
+
+      //datafile2
+      var dataset2 = [];
+      var samples2 = [];
+      if(typeof file2 != 'undefined'){
+        localStorage.setItem("datafile2", file2.name);
+        //save data
+        const reader2 = new FileReader();
+        reader.addEventListener("load", () => {
+          var tmp =  convert_data(reader2.result);
+          dataset2 = tmp[0];
+          samples2 = tmp[1];
+          localStorage.setItem("data2", JSON.stringify(dataset2));
+          localStorage.setItem("samples2", JSON.stringify(samples2));
+          //change number of mutations
+          localStorage.setItem("numdata2", dataset2.length);
+        });
+        reader2.readAsText(file2);
+      }
+    });
   </script>
   <script>
     // write Configurations and Settings in txt-file

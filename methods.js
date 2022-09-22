@@ -231,18 +231,26 @@ function setConfigurations(data){
 function createCheckboxesDataVis(){
   var sample1 = JSON.parse(localStorage.getItem('samples1'));
   var sample2 = JSON.parse(localStorage.getItem('samples2'));
-  if (sample1.length == 0){
-    createCheckbox("Dataset1", color1[0]);
-  } else {
-    for(i = 0; i<sample1.length; i++){
-      createCheckbox(sample1[i], color1[i]);
+  var data1 = JSON.parse(localStorage.getItem('data1'));
+  var data2 = JSON.parse(localStorage.getItem('data2'));
+  
+  if (data1.length != 0){
+    if (sample1.length == 0){
+      createCheckbox("Dataset1", color1[0]);
+    } else {
+      for(i = 0; i<sample1.length; i++){
+        createCheckbox(sample1[i], color1[i]);
+      }
     }
   }
-  if (sample2.length == 0){
-    createCheckbox("Dataset2", color2[0]);
-  } else {
-    for(i = 0; i<sample2.length; i++){
-      createCheckbox(sample2[i], color2[i]);
+
+  if(data2.length != 0){
+    if (sample2.length == 0){
+      createCheckbox("Dataset2", color2[0]);
+    } else {
+      for(i = 0; i<sample2.length; i++){
+        createCheckbox(sample2[i], color2[i]);
+      }
     }
   }
 }

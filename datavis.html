@@ -85,7 +85,6 @@
       $('#checkboxes').change(function(){
         d3.select("#datavis").select("g").remove();
         draw_svg();
-
       })
       $("#save_as_svg").click(function() { 
           downloadSVG("datavis", "downloadLink");

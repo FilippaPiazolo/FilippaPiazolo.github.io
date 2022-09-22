@@ -50,12 +50,12 @@ function draw_svg()
   
   /*draw mutations of dataset 1*/
   var data1 = JSON.parse(localStorage.getItem("data1"));
-  if(data1 != null)
+  if(data1.length != 0)
     draw_mutations(data1, color1, g, distance_c, c_width, c_factor, centromere_d, centromere_x, centromere_y, allChecked, data_genome, localStorage.getItem("datatype1"), 1);
   
   /*draw mutations of dataset2*/
   var data2 = JSON.parse(localStorage.getItem("data2"));
-  if(data2 != null)
+  if(data2.length != 0)
     draw_mutations(data2, color2, g, distance_c, c_width, c_factor, centromere_d, centromere_x, centromere_y, allChecked, data_genome, localStorage.getItem("datatype2"), 2);
 
   /*allows zooming*/
