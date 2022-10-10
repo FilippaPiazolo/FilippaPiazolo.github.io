@@ -19,7 +19,7 @@
           <i class="material-icons">menu</i>
         </a>
         <div class="container" style="width:95%">
-          <a href="#" class="brand-logo center">Data visualisation</a>
+          <a href="#" class="brand-logo center">Simple data visualisation</a>
           <div class="right">
             <button class="btn btn-success" id="save_as_svg" value="">
               <a id="downloadLink" href="#" download="datavis.svg" style="font-size : 20px; color: white;" class="right" title="Download Image">
@@ -35,7 +35,7 @@
     <ul class="sidenav" id="mobile-links">
       <li><a href="index.html">Main page</a></li>
       <li><a href="configurations.html">Configurations</a></li>
-      <li><a href="">Visualise data</a></li>
+      <li><a href="">Simple data visualisation</a></li>
       <li><a href="densityvis.html">Density visualisation</a></li>
       <li><a href="densitycomp.html">Density comparison</a></li>
     </ul>
@@ -45,7 +45,7 @@
       <div class="container">
         <div class="row">
           <p> <!-- Hier kommt die Beschreibung der Seite hin, was man hier machen kann -->
-            Select datasets or experiments that should be annotated on the chromosomes.
+            Select datasets or experiments that should be annotated on the chromosomes. Turn on the value switch to annotate SNPs/genomic regions with color defined by it's value.
           </p>
         </div>
       </div>
@@ -60,14 +60,56 @@
           <svg width="100%" id="datavis"></svg>
         </div>
         <div class="col s3 pull-s9">
-          <!-- hier müssen die Checkboxes entsprechend der hochgeladenen Daten erstellt werden: Try and Catch Block verwenden! -->
-          <span class="flow-text">Datasets / Experiments:</span>
-          <form action="#" id="checkboxes"></form>
+          <!-- hier müssen die Checkboxes entsprechend der hochgeladenen Daten erstellt werden-->
+          <div class="row">
+            <p>Value:<p>
+            <div class="col">
+              <div class="switch">
+                <label>
+                  Off
+                  <input type="checkbox" id="value_switch">
+                  <span class="lever"></span>
+                  On
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row" id="range">
+            <p>Value Range:</p>
+            <div class="input-field col s3">
+              <input placeholder="0" id="start" type="text" class="validate">
+              <label for="start">Start</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="30" id="end" type="text" class="validate">
+              <label for="end">End</label>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="row">
+            <span class="flow-text">Datasets / Experiments:</span>
+            <form action="#" id="checkboxes"></form>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="divider"></div>
+
+    <footer class="page-footer indigo lighten-2">
+      <div class="container">
+        <div class="row">
+          <div class="col s4"></div>
+          <div class="col s3">
+            <a class="white-text" href="https://www.uni-heidelberg.de/de/datenschutzerklaerung">privacy policy</a>
+          </div>
+          <div class="col s2">
+            <a class="white-text" href="https://www.uni-heidelberg.de/impressum.html">imprint</a>
+          </div>
+        </div>
+        <div class="row"></div>
+      </div>
+    </footer>
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -79,6 +121,21 @@
     <script>
       $(document).ready(function(){ 
         $('.sidenav').sidenav();
+        var val = localStorage.getItem("value"),
+          start = localStorage.getItem("startValue"),
+          end = localStorage.getItem("endValue");
+        
+        if(val == null || val == "false"){
+          document.getElementById('value_switch').checked = false;
+          document.getElementById('range').style.display = "none";
+          document.getElementById('start').placeholder = start;
+          document.getElementById('end').placeholder = end;
+        }else{
+          document.getElementById('value_switch').checked = true;
+          document.getElementById('range').style.display = "block";
+          document.getElementById('start').placeholder = start;
+          document.getElementById('end').placeholder = end;
+        }
         createCheckboxesDataVis();
         draw_svg();
       });
@@ -87,8 +144,52 @@
         draw_svg();
       })
       $("#save_as_svg").click(function() { 
-          downloadSVG("datavis", "downloadLink");
+        downloadSVG("datavis", "downloadLink");
       });
+      $('#value_switch').change(function(){
+        var tmp = $('#value_switch').is(':checked');
+        localStorage.setItem("value", tmp)
+        if(tmp)
+          document.getElementById('range').style.display = "block";
+        else
+          document.getElementById('range').style.display = "none";
+        
+        var el = document.getElementById("start")
+        if (el.value == "") //no specific input --> take default (placeholder)
+          localStorage.setItem("startValue", el.placeholder)
+        else  
+          localStorage.setItem("startValue", el.value);
+
+        el = document.getElementById("end")
+        if (el.value == "") //no specific input --> take default (placeholder)
+          localStorage.setItem("endValue", el.placeholder)
+        else  
+          localStorage.setItem("endValue", el.value);
+
+        d3.select("#datavis").select("g").remove();
+        draw_svg();
+      });
+      $('#start').change(function(){
+        var el = document.getElementById("start")
+        if (el.value == "") //no specific input --> take default (placeholder)
+          localStorage.setItem("startValue", el.placeholder)
+        else  
+          localStorage.setItem("startValue", el.value);
+        
+        d3.select("#datavis").select("g").remove();
+        draw_svg();
+      });
+      $('#end').change(function(){
+        var el = document.getElementById("end")
+        if (el.value == "") //no specific input --> take default (placeholder)
+          localStorage.setItem("endValue", el.placeholder)
+        else  
+          localStorage.setItem("endValue", el.value);
+
+        d3.select("#datavis").select("g").remove();
+        draw_svg();
+      });
+      
     </script>
   </body>
 </html>

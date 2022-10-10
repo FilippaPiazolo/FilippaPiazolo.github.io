@@ -8,6 +8,8 @@ Data Type 2: #datatype2
 
 Dataset 1: #data1 
 Dataset 2: #data2
+Datafile1: #filename1
+Datafile2: #filename2
 Number of mutations dataset 1: #numdata1
 Number of mutations dataset 2: #numdata2
 Chromosome Number: #chrNumber
@@ -141,7 +143,7 @@ function draw_comparison_distribution(pointsA, pointsB, g, distance_c, c_width, 
 function draw_comparison_all(data_genome, centromere,dataA, dataB)
 {
   const width = $("#datacomp").width(),
-    height = width*1.4,
+    height = width*1.2,
     c_width = width/50,
     distance_c = c_width*2,
     c_factor = 320000,
@@ -418,12 +420,12 @@ function draw_cluster(clusterAll, numMutations, allGenes, g, distance_c, c_width
     if (cluster_gene.length > 0){ //cluster has effected genes
       //chromosome number, position on chromosome, number of mutations, effected genes
       clusterNumber.append("title") 
-        .text("chr" + chrNumber + ";" + String(start) + "-" + String(end) + 
-              "\n number of mutations: " + String(numMut) + "\n gene: " + String(cluster_gene)) 
+        .text("chromosome: " + chrNumber + "\nposition: " + String(start) + "-" + String(end) + 
+              "\nnumber of mutations: " + String(numMut) + "\ngene: " + String(cluster_gene)) 
     } else { //cluster has no effected genes
       clusterNumber.append("title") 
-        .text("chr" + chrNumber + ";" + String(start) + "-" + String(end) + 
-              "\n number of mutations: " + String(numMut) + "\n no specific gene")
+        .text("chromosome: " + chrNumber + "\nposition: " + String(start) + "-" + String(end) + 
+              "\nnumber of mutations: " + String(numMut) + "\nno specific gene")
     }
 
   }
@@ -498,7 +500,7 @@ function draw_density_all(data_genome, centromere, data, density, numMutations, 
     height = width*1.2,
     c_width = width/50,
     distance_c = c_width*2,
-    c_factor = 350000,
+    c_factor = 320000,
     centromere_x = c_width/5,
     centromere_y = c_width/2;
 
@@ -543,26 +545,6 @@ function draw_density_all(data_genome, centromere, data, density, numMutations, 
   }
 
   return svg.node();
-}
-
-
-function _resultsCluster(densData,data,all_together,all_diagramms)
-{
-  if (densData == "all data"){
-    let experiment = [];
-    for (let i=0; i<data.length;i++){
-      experiment = experiment.concat(data[i])
-    }
-    return all_together(experiment, all_diagramms)
-  }
-  else if (densData == "dataset1")
-    return all_together(data[0], all_diagramms)
-  else if (densData == "dataset2")
-    return all_together(data[1], all_diagramms)
-  else{
-    const experiment = data.filter(x => x.Sample === densData); 
-    return all_together(experiment, all_diagramms)
-  }
 }
 
 

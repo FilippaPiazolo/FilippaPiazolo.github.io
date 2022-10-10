@@ -19,9 +19,13 @@
       </a>
       <div class="container" style="width:95%">
         <a href="#" class="brand-logo center">Configurations</a>
-        <a id="downloadLink" href="#" download="configuration.txt" style="font-size : 20px; color: white;" class="right" title="Download Configurations and Parameter Settings">
-          <i class="fa fa-download"></i>
-        </a>
+        <div class="right">
+          <button class="btn btn-success" id="save_txt" value="">
+            <a id="downloadLink" href="#" download="configuration.txt" style="font-size : 20px; color: white;" class="right" title="Download Configurations and Parameter Settings">
+              <i class="fa fa-download"></i>
+            </a>
+          </button>
+        </div>
       </div>
     </nav>
   </div>
@@ -30,7 +34,7 @@
   <ul class="sidenav" id="mobile-links">
     <li><a href="index.html">Main page</a></li>
     <li><a href="">Configurations</a></li>
-    <li><a href="datavis.html">Visualise data</a></li>
+    <li><a href="datavis.html">Simple data visualisation</a></li>
     <li><a href="densityvis.html">Density visualisation</a></li>
     <li><a href="densitycomp.html">Density comparison</a></li>
   </ul>
@@ -40,8 +44,8 @@
     <div class="container" style="width:90%">
       <div class="row">
         <p>
-          Here general configurations can be set and two different datasets each with up to six different experiments can be uploaded. Both datasets must have the following file structure.
-          Also make sure, that the datasets use the same genome type and genome reference.</p>
+          Here general configurations can be set and two different datasets each with up to six different experiments can be uploaded.
+          You can save the configurations by downloading the configuration file.</p>
       </div>
       <div class="divider"></div>
 
@@ -73,19 +77,19 @@
           <div class = "row">
             <div class="input-field col s3">
               <input placeholder="chr" id="h_chr" type="text" class="validate">
-              <label for="h_chr">Chromosome number</label>
+              <label for="h_chr">Chromosome number *</label>
             </div>
             <div class="input-field col s3">
               <input placeholder="pos" id="h_pos" type="text" class="validate">
-              <label for="h_pos">Position of SNP</label>
+              <label for="h_pos">Position of SNP *</label>
             </div>
             <div class="input-field col s3">
               <input placeholder="start" id="h_start" type="text" class="validate">
-              <label for="h_start">Start of genomic region</label>
+              <label for="h_start">Start of genomic region *</label>
             </div>
             <div class="input-field col s3">
               <input placeholder="end" id="h_end" type="text" class="validate">
-              <label for="h_end">End of genomic region</label>
+              <label for="h_end">End of genomic region *</label>
             </div>
           </div>
           <div class="row">
@@ -97,9 +101,35 @@
               <input placeholder="GENE" id="h_gene" type="text" class="validate">
               <label for="h_gene">Effected genes</label>
             </div>
-            <div class="col push-s3">
-              <a class="waves-effect waves-light btn" id="header">set header</a>
+            <div class="input-field col s3">
+              <input placeholder="value" id="h_value" type="text" class="validate">
+              <label for="h_value">Value per mutation</label>
             </div>
+            <div class="col s3">
+              <a class="waves-effect waves-light btn"  id="header">set header</a>
+            </div>
+          </div>
+          <div class="row">
+            <h7>Sample file structure</h7>
+            <table>
+              <tr>
+                <th id="t_sample">sample</th>
+                <th id="t_chr">chr</th>
+                <th id="t_pos">pos</th>
+                <th id="t_gene">GENE</th>
+                <th id="t_value">value</th>
+              </tr>
+              <tr>
+                <td>BL2AnsiLr1</td>
+                <td>chr1</td>
+                <td>12920891</td>
+                <td>PRAMEF2</td>
+                <td>10.2</td>
+              </tr>
+              <tr>
+                <td>...</td>
+              </tr>
+            </table>
           </div>
         </form>
       </div>
@@ -199,7 +229,7 @@
 
       <div  class="row">
         <h6>Input file</h6>
-        <p>A .cvs-file is accepted as the data input. The file must be tab-delimited. Following headers are accepted:</p>
+        <p>A cvs-file is accepted as the data input. The file must be tab-delimited. Following headers are accepted:</p>
         <table>
           <tr>
             <th>Default Header</th>
@@ -236,18 +266,38 @@
             <td>no</td>
             <td>specify which gene is effected by the SNP</td>
           </tr>
+          <tr>
+            <td>value</td>
+            <td>no</td>
+            <td>... (e.g. 10.2)</td>
+          </tr>
         </table>
         <p>The file can contain other headers. But they will be ignored.</p>
         <h6>Type of data</h6>
         <p>Select whether the entries are point mutations or genomic regions.</p>
         <h6>Genome Type</h6>
-        <p>Select the human or mouse genome. The entries in the chr collums need to match the chromosome ids form the selected genome.</p>
+        <p>Select the human or mouse genome. The entries in the chr collumns need to match the chromosome ids form the selected genome.</p>
         <h6>Genome reference</h6>
         <p>The genome reference is needed for the correct linking to the UCSC genome browser.</p>
       </div>
 
     </div>
   </div>
+
+  <footer class="page-footer indigo lighten-2">
+    <div class="container">
+      <div class="row">
+        <div class="col s4"></div>
+        <div class="col s3">
+          <a class="white-text" href="https://www.uni-heidelberg.de/de/datenschutzerklaerung">privacy policy</a>
+        </div>
+        <div class="col s2">
+          <a class="white-text" href="https://www.uni-heidelberg.de/impressum.html">imprint</a>
+        </div>
+      </div>
+      <div class="row"></div>
+    </div>
+  </footer>
 
   <!-- Compiled and minified JavaScript -->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -271,6 +321,7 @@
         localStorage.setItem("samples2", JSON.stringify([]));
         localStorage.setItem("numdata2", 0);
       }
+      //default für localStorage schreiben!
       var tmp = localStorage.getItem("h_chr");
       if(tmp == null)
         tmp = document.getElementById("h_chr").placeholder
@@ -300,6 +351,11 @@
       if(tmp == null)
         tmp = document.getElementById("h_gene").placeholder
       $('#h_gene').attr("placeholder", tmp);
+
+      tmp = localStorage.getItem("h_value");
+      if(tmp == null)
+        tmp = document.getElementById("h_value").placeholder
+      $('#h_value').attr("placeholder", tmp);
     });
   </script>
   <script>
@@ -311,6 +367,7 @@
         localStorage.setItem("h_chr", el.placeholder)
       else  
         localStorage.setItem("h_chr", el.value)
+      document.getElementById("t_chr").innerHTML = localStorage.getItem("h_chr");
 
       //position SNP
       el = document.getElementById("h_pos")
@@ -318,6 +375,7 @@
         localStorage.setItem("h_pos", el.placeholder)
       else  
         localStorage.setItem("h_pos", el.value)
+      document.getElementById("t_pos").innerHTML = localStorage.getItem("h_pos");
 
       //start positon genomic region
       el = document.getElementById("h_start")
@@ -339,6 +397,7 @@
         localStorage.setItem("h_sample", el.placeholder)
       else  
         localStorage.setItem("h_sample", el.value)
+      document.getElementById("t_sample").innerHTML = localStorage.getItem("h_sample");
       
       //effected genes
       el = document.getElementById("h_gene")
@@ -346,6 +405,17 @@
         localStorage.setItem("h_gene", el.placeholder)
       else  
         localStorage.setItem("h_gene", el.value)
+      document.getElementById("t_gene").innerHTML = localStorage.getItem("h_gene");
+
+      //value
+      el = document.getElementById("h_value")
+      if (el.value == "") //no specific input --> take default (placeholder)
+        localStorage.setItem("h_value", el.placeholder)
+      else  
+        localStorage.setItem("h_value", el.value)
+      document.getElementById("t_value").innerHTML = localStorage.getItem("h_value");
+
+      M.toast({html: 'header configurations saved'})
     })
 
     //upload dataset 1 and convert into right format
@@ -482,41 +552,49 @@
         });
         reader2.readAsText(file2);
       }
+
+      M.toast({html: 'all configurations saved'})
     });
   </script>
   <script>
-    // write Configurations and Settings in txt-file
+    $("#save_txt").click(function() { 
+      // write Configurations and Settings in txt-file
 
-    // Generate the file download URL and assign it to the link
-    // Wait until the page has loaded! Otherwise the download link element will not exist
-    window.addEventListener("load", function(){
-        document.getElementById('downloadLink').href = generateTextFileUrl(
-          'Configuration:\n' +
-          'h_chr: ' + localStorage.getItem("h_chr") + '\n' +
-          'h_pos: ' + localStorage.getItem("h_pos") + '\n' +
-          'h_start: ' + localStorage.getItem("h_start") + '\n' +
-          'h_end: ' + localStorage.getItem("h_end") + '\n' +
-          'h_sample: ' + localStorage.getItem("h_sample") + '\n' +
-          'h_gene: ' + localStorage.getItem("h_gene") + '\n' +
-          'datafile1:' + localStorage.getItem("datafile1") + '\n' +
-          'datafile2:' + localStorage.getItem("datafile2") + '\n' +
-          'datatype1: ' + localStorage.getItem("datatype1") + '\n' +
-          'datatype2: ' + localStorage.getItem("datatype2") + '\n' +
-          'genomeType: ' + localStorage.getItem("genomeType") + '\n' +
-          'genomeRef: ' + localStorage.getItem("genomeRef") + '\n\n' +
-          'ParametersDensityVisualisation:\n' +
-          'binSize1: ' + localStorage.getItem("binSize1") + '\n' +
-          'bandwith1: ' + localStorage.getItem("bandwith1") + '\n' +
-          'amplitude1: ' + localStorage.getItem("amplitude1") + '\n' +
-          'numMut: ' + localStorage.getItem("numMut") + '\n' +
-          'cluster: ' + localStorage.getItem("cluster") + '\n' +
-          'minClusterSize: ' + localStorage.getItem("minClusterSize") + '\n\n' +
-          'ParametersDensityComparison:\n' +
-          'binSize2: ' + localStorage.getItem("binSize2") + '\n' +
-          'bandwith2: ' + localStorage.getItem("bandwith2") + '\n' +
-          'amplitude2: ' + localStorage.getItem("amplitude2") + '\n'
-          );
+      // Generate the file download URL and assign it to the link
+      // Wait until the page has loaded! Otherwise the download link element will not exist
+      document.getElementById('downloadLink').href = generateTextFileUrl(
+        'Configuration:\n' +
+        'h_chr: ' + localStorage.getItem("h_chr") + '\n' +
+        'h_pos: ' + localStorage.getItem("h_pos") + '\n' +
+        'h_start: ' + localStorage.getItem("h_start") + '\n' +
+        'h_end: ' + localStorage.getItem("h_end") + '\n' +
+        'h_sample: ' + localStorage.getItem("h_sample") + '\n' +
+        'h_gene: ' + localStorage.getItem("h_gene") + '\n' +
+        'h_value: ' + localStorage.getItem("h_value") + '\n' +
+        'datafile1:' + localStorage.getItem("datafile1") + '\n' +
+        'datafile2:' + localStorage.getItem("datafile2") + '\n' +
+        'datatype1: ' + localStorage.getItem("datatype1") + '\n' +
+        'datatype2: ' + localStorage.getItem("datatype2") + '\n' +
+        'genomeType: ' + localStorage.getItem("genomeType") + '\n' +
+        'genomeRef: ' + localStorage.getItem("genomeRef") + '\n\n' +
+        'ParametersSimpleVisualisation:\n' +
+        'value: ' + localStorage.getItem("value") + '\n' +
+        'startValue: ' + localStorage.getItem("startValue") + '\n' +
+        'endValue: ' + localStorage.getItem("endValue") + '\n' +
+        'ParametersDensityVisualisation:\n' +
+        'binSize1: ' + localStorage.getItem("binSize1") + '\n' +
+        'bandwith1: ' + localStorage.getItem("bandwith1") + '\n' +
+        'amplitude1: ' + localStorage.getItem("amplitude1") + '\n' +
+        'numMut: ' + localStorage.getItem("numMut") + '\n' +
+        'cluster: ' + localStorage.getItem("cluster") + '\n' +
+        'minClusterSize: ' + localStorage.getItem("minClusterSize") + '\n\n' +
+        'ParametersDensityComparison:\n' +
+        'binSize2: ' + localStorage.getItem("binSize2") + '\n' +
+        'bandwith2: ' + localStorage.getItem("bandwith2") + '\n' +
+        'amplitude2: ' + localStorage.getItem("amplitude2") + '\n'
+      );
     });
+    
   </script>
 </body>
 </html>

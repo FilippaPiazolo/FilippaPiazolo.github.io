@@ -1,35 +1,39 @@
 /*
 Settings stored in localStorage:
-
 Genom Type: #genomeType
 Genome Reference: #genomeRef
-Dataset 1: #data1 
-Dataset 2: #data2
 Data Type 1: #datatype1
 Data Type 2: #datatype2
+
+Dataset 1: #data1 
+Dataset 2: #data2
+Datafile1: #filename1
+Datafile2: #filename2
 Number of mutations dataset 1: #numdata1
 Number of mutations dataset 2: #numdata2
-Samples dataset 1: #samples1
-Samples dataset 2: #samples2
-filename1
-filename2
+Chromosome Number: #chrNumber
+
+Storing Parameters:
+only Density:
+Bin Size: #binSize1
+Bandwith: #bandwith1
+Amplitude: #amplitude1
+Min. Number of Mutations: #numMut
+Thresholdvalue for cluster: #cluster
+Min. Cluster Size: #minClusterSize
+
+Comparison Density: 
+Bin Size: #binSize2
+Bandwith: #bandwith2
+Amplitude: #amplitude2
 */
 
-
-// A global variable should be defined to hold the URL for the file to be downloaded
-// This is good practice as if many links are being generated or the link is being regularly updated, you don't want to be creating new variables every time, wasting memory
-var textFileUrl = null;
 
 // Function for generating a text file URL containing given text
 function generateTextFileUrl(txt) {
     let fileData = new Blob([txt], {type: 'text/plain'});
 
-    // If a file has been previously generated, revoke the existing URL
-    if (textFileUrl !== null) {
-        window.URL.revokeObjectURL(textFile);
-    }
-
-    textFileUrl = window.URL.createObjectURL(fileData);
+    var textFileUrl = window.URL.createObjectURL(fileData);
 
     // Returns a reference to the global variable holding the URL
     // Again, this is better than generating and returning the URL itself from the function as it will eat memory if the file contents are large or regularly changing
@@ -38,11 +42,11 @@ function generateTextFileUrl(txt) {
 
 function downloadSVG(svgElement,downloadLink){
   var svg = document.getElementById(svgElement);
-        svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-        svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-        svg = document.getElementById(svgElement).outerHTML;
-        var svgBlob = new Blob([svg], {type: "image/svg"});
-        document.getElementById(downloadLink).href = window.URL.createObjectURL(svgBlob);
+  svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+  svg = document.getElementById(svgElement).outerHTML;
+  var svgBlob = new Blob([svg], {type: "image/svg"});
+  document.getElementById(downloadLink).href = window.URL.createObjectURL(svgBlob);
 }
 
 //--------------- defined values ------------------ //
@@ -102,8 +106,8 @@ var mouse_centromere = mouse_genome.map(mouse_genome => mouse_genome.centromere.
 
 
 var color = d3.schemePaired;
-var color1 = color.slice(0,6);//["green", "blue", "red", "purple", "pink", "orange"];
-var color2 = color.slice(6);
+var color1 = ['DarkOrange', 'green', 'red', 'purple', 'pink', 'blue']//['#1F77B4FF', '#FF7F0EFF', '#2CA02CFF', '#D62728FF', '#9467BDFF', '#E377C2FF'];//color.slice(0,6);//["green", "blue", "red", "purple", "pink", "orange"];
+var color2 = ['gold', 'turquoise', 'LawnGreen', 'SkyBlue', 'Coral', 'BurlyWood']//['#17BECFFF', '#B5CF6BFF', '#E7BA52FF', '#FF9896FF', '#C49C94FF', '#9C9EDEFF'];//color.slice(6);
 
 
 
@@ -122,6 +126,7 @@ function convert_data(data) {
   var end = localStorage.getItem("h_end");
   var gene = localStorage.getItem("h_gene");
   var sample = localStorage.getItem("h_sample");
+  var value = localStorage.getItem("h_value"); 
 
   var def = ar[0].split("\t");
   var sampleIndex = def.indexOf(sample);
@@ -130,6 +135,8 @@ function convert_data(data) {
   var startIndex = def.indexOf(start);
   var endIndex = def.indexOf(end);
   var geneIndex = def.indexOf(gene);
+  var valueIndex = def.indexOf(value);
+  console.log(value);
 
   for(let i = 1; i<ar.length-1; i++){
     var res = ar[i].split("\t");
@@ -152,61 +159,121 @@ function convert_data(data) {
     //entweder pos oder start & end; sample ist optional
     if (posIndex != -1){ //point mutation
       var startPos = res[posIndex];
-      if(sampleIndex != -1){
+      if(sampleIndex != -1){ //specified sample
         var samp = res[sampleIndex];
         if (samples.indexOf(samp) == -1){ //sample not in list
           samples.push(samp);
         }
-        if (geneIndex != -1) {
+        if (geneIndex != -1) { //specified gene
           var genes = res[geneIndex];
-          obj = {
-            sample: samp, chr: chrNum, pos: startPos, gene: genes
+
+          if(valueIndex != -1){ //specified value
+            var values = res[valueIndex];
+            obj = {
+              sample: samp, chr: chrNum, pos: startPos, gene: genes, value: values
+            }
+          } else { //no specified value
+            obj = {
+              sample: samp, chr: chrNum, pos: startPos, gene: genes
+            }
           }
-        } else {
-          obj = {
-            sample: samp, chr: chrNum, pos: startPos
+
+        } else { //no specified gene
+          if(valueIndex != -1){
+            var values = res[valueIndex];
+            obj = {
+              sample: samp, chr: chrNum, pos: startPos, value: values
+            }
+          } else {
+            obj = {
+              sample: samp, chr: chrNum, pos: startPos
+            }
           }
         }
-        
-      } else {
-        if (geneIndex != -1) {
+      } else { //no specified sample
+        if (geneIndex != -1) { //specified gene
           var genes = res[geneIndex];
-          obj = {
-            sample: samp, pos: startPos, gene: genes
+
+          if(valueIndex != -1){ //specified value
+            var values = res[valueIndex];
+            obj = {
+              chr: chrNum, pos: startPos, gene: genes, value: values
+            }
+          } else { //no specified value
+            obj = {
+              chr: chrNum, pos: startPos, gene: genes
+            }
           }
-        } else {
-          obj = {
-            sample: samp, pos: startPos
+        } else { //no specified gene
+          if(valueIndex != -1){ //specified value
+            var values = res[valueIndex];
+            obj = {
+              chr: chrNum, pos: startPos, value: values
+            }
+          } else { //no specified value
+            obj = {
+              chr: chrNum, pos: startPos
+            }
           }
         }
       }
     } else if (startIndex != -1 && endIndex != -1){ //genomic region
       var startPos = res[startIndex];
       var endPos = res[endIndex];
-      if(sampleIndex != -1){
+      if(sampleIndex != -1){ //specified sample
         var samp = res[sampleIndex];
         if (samples.indexOf(samp) == -1){ //sample not in list
           samples.push(samp);
         }
-        if (geneIndex != -1){
+        if (geneIndex != -1){ //specified gene
           var genes = res[geneIndex];
-          obj = {
-            sample: samp, chr: chrNum, start: startPos, end: endPos, gene: genes
+
+          if(valueIndex != -1){ //specified value
+            var values = res[valueIndex];
+            obj = {
+              sample: samp, chr: chrNum, start: startPos, end: endPos, gene: genes, value: values
+            }
+          } else { //no specified value
+            obj = {
+              sample: samp, chr: chrNum, start: startPos, end: endPos, gene: genes
+            }
           }
-        } else {
-          obj = {
-            sample: samp, chr: chrNum, start: startPos, end: endPos
+        } else { //no specified gene
+          if(valueIndex != -1){ //specified value
+            var values = res[valueIndex];
+            obj = {
+              sample: samp, chr: chrNum, start: startPos, end: endPos, value: values
+            }
+          } else { //no specified value
+            obj = {
+              sample: samp, chr: chrNum, start: startPos, end: endPos
+            }
           }
         }
-      } else {
-        if (geneIndex != -1){
+      } else { //no specified sample
+        if (geneIndex != -1){ //specified gene
           var genes = res[geneIndex];
-          obj = {
-            chr: chrNum, start: startPos, end: endPos, gene: genes
+
+          if(valueIndex != -1){ //specified value
+            var values = res[valueIndex];
+            obj = {
+              chr: chrNum, start: startPos, end: endPos, gene: genes, value: values
+            }
+          } else { //no specified value
+            obj = {
+              chr: chrNum, start: startPos, end: endPos, gene: genes
+            }
           }
-        } else {
-          obj = {
-            chr: chrNum, start: startPos, end: endPos
+        } else { //no specified gene
+          if(valueIndex != -1){ //specified value
+            var values = res[valueIndex];
+            obj = {
+              chr: chrNum, start: startPos, end: endPos, value: values
+            }
+          } else { //no specified value
+            obj = {
+              chr: chrNum, start: startPos, end: endPos
+            }
           }
         }
       }

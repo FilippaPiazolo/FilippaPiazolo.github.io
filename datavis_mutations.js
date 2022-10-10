@@ -1,18 +1,3 @@
-/*
-Settings stored in localStorage:
-
-Genom Type: #genomeType
-Genome Reference: #genomeRef
-Dataset 1: #data1 
-Dataset 2: #data2
-Data Type 1: #datatype1
-Data Type 2: #datatype2
-Number of mutations dataset 1: #numdata1
-Number of mutations dataset 2: #numdata2
-Samples dataset 1: #samples1
-Samples dataset 2: #samples2
-*/
-
 
 function draw_svg()
 {
@@ -21,7 +6,7 @@ function draw_svg()
     height = width*1.2, //height of the image
     c_width = width/50, //width of one chromosome
     distance_c = 2*c_width,  //distance between two chromosomes 
-    c_factor = 300000, //scaling factor for the chromosomes
+    c_factor = 320000, //scaling factor for the chromosomes
     centromere_x = c_width/5, //distance for centromere in x-direction
     centromere_y = c_width/2; //distance where centromere starts/ends in y-direction 
 
@@ -51,12 +36,12 @@ function draw_svg()
   /*draw mutations of dataset 1*/
   var data1 = JSON.parse(localStorage.getItem("data1"));
   if(data1.length != 0)
-    draw_mutations(data1, color1, g, distance_c, c_width, c_factor, centromere_d, centromere_x, centromere_y, allChecked, data_genome, localStorage.getItem("datatype1"), 1);
+    draw_mutations(data1, color1, g, distance_c, c_width, c_factor, centromere_d, centromere_x, centromere_y, allChecked, data_genome, localStorage.getItem("datatype1"), 1, localStorage.getItem("value"), parseFloat(localStorage.getItem("startValue")), parseFloat(localStorage.getItem("endValue")));
   
   /*draw mutations of dataset2*/
   var data2 = JSON.parse(localStorage.getItem("data2"));
   if(data2.length != 0)
-    draw_mutations(data2, color2, g, distance_c, c_width, c_factor, centromere_d, centromere_x, centromere_y, allChecked, data_genome, localStorage.getItem("datatype2"), 2);
+    draw_mutations(data2, color2, g, distance_c, c_width, c_factor, centromere_d, centromere_x, centromere_y, allChecked, data_genome, localStorage.getItem("datatype2"), 2, localStorage.getItem("value"), parseFloat(localStorage.getItem("startValue")), parseFloat(localStorage.getItem("endValue")));
 
   /*allows zooming*/
   svg.call(zoom);
@@ -118,7 +103,7 @@ function draw_chromosome(g, data_genome, centromere, distance_c, c_width, c_fact
     .style("stroke", "black");
     //show ID when moving mouse over chromosome
     chromosome.append("title") 
-    .text(data_genome[i].ID);
+    .text("chr " + data_genome[i].ID);
     //label all chromosome with ID
     g.append("text")
       .attr("x", i*distance_c + c_width/2)             
@@ -131,21 +116,21 @@ function draw_chromosome(g, data_genome, centromere, distance_c, c_width, c_fact
 }
 
 
-function draw_mutations(data, colors, svg, distance_c, c_width, c_factor, centromere, centromere_x, centromere_y, layers, genome, mutType, dataNum){ 
+function draw_mutations(data, colors, svg, distance_c, c_width, c_factor, centromere, centromere_x, centromere_y, layers, genome, mutType, dataNum, value, start, end){ 
   /*
     visualise mutations from selected experiments
   */
- 
+
   var sample1 = JSON.parse(localStorage.getItem('samples1'));
   var sample2 = JSON.parse(localStorage.getItem('samples2'));
 
   for (let i = 0; i < layers.length; ++i) {
     if (layers[i] == "Dataset1"){
       if (dataNum == 1)
-        draw_specific_mutations(data, svg, colors[0], distance_c, c_width,c_factor, centromere, centromere_x, centromere_y, genome, mutType);
+        draw_specific_mutations(data, svg, colors[0], distance_c, c_width,c_factor, centromere, centromere_x, centromere_y, genome, mutType, value, start, end);
     }else if (layers[i] == "Dataset2"){
       if (dataNum == 2)
-        draw_specific_mutations(data, svg, colors[0], distance_c, c_width,c_factor, centromere, centromere_x, centromere_y, genome, mutType);
+        draw_specific_mutations(data, svg, colors[0], distance_c, c_width,c_factor, centromere, centromere_x, centromere_y, genome, mutType, value, start, end);
     }else{
       //filter data by experiment
       let ind1 = sample1.indexOf(layers[i]);
@@ -157,25 +142,39 @@ function draw_mutations(data, colors, svg, distance_c, c_width, c_factor, centro
           experiment = data.filter(x => x.sample === layers[i]); 
         }
         //draw mutations of experiment
-        draw_specific_mutations(experiment, svg, colors[ind1] , distance_c, c_width,c_factor, centromere, centromere_x, centromere_y, genome,mutType); 
+        draw_specific_mutations(experiment, svg, colors[ind1] , distance_c, c_width,c_factor, centromere, centromere_x, centromere_y, genome, mutType, value, start, end); 
       } else if (ind2 != -1){
         let experiment = []
         for (let j=0; j<data.length; j++)
           experiment = data.filter(x => x.sample === layers[i]); 
         //draw mutations of experiment
-        draw_specific_mutations(experiment, svg, colors[ind2] , distance_c, c_width,c_factor, centromere, centromere_x, centromere_y, genome,mutType); 
+        draw_specific_mutations(experiment, svg, colors[ind2] , distance_c, c_width,c_factor, centromere, centromere_x, centromere_y, genome, mutType, value, start, end); 
       }
     }
   }
 }
 
-//TO-DO: Genomic regions in area of centromere!
-function draw_specific_mutations(experement_data, g, color, distance_c, c_width, c_factor, centromere, centromere_x, centromere_y, genome, mutType){
+
+function draw_specific_mutations(experement_data, g, color, distance_c, c_width, c_factor, centromere, centromere_x, centromere_y, genome, mutType, value, start, end){
   /*
     visualise mutations on the chromosomes for one experiment
   */
   for (let i = 0; i < experement_data.length; ++i) { 
     const chr = parseInt(experement_data[i].chr); //chromosome of the mutation
+
+    //change color dependent on value
+    var col;
+    if(value == "true"){
+      var myColor = d3.scaleLinear().domain([start,end]).range([color, "black"]); //geht nur für explizite Namen...
+      col = myColor(experement_data[i].value);
+      console.log(col)
+    }
+    else{
+      col = color;
+    }
+    
+    //To-Do: mousemove over mutation --> get value
+
     if((chr-1) < genome.length){ //only mutations on existing chromosomes is visualised
       //data outside the chromosomes is clipped away --> error message/notification
       if (mutType == "pm"){ //draw point mutation as a line
@@ -186,21 +185,23 @@ function draw_specific_mutations(experement_data, g, color, distance_c, c_width,
             //change length of the mutation line
             let distance_m = length_mutation_centromere(centromere[chr-1], centromere_x, centromere_y, position) 
             //draw mutation as a line
-            g.append("line")
+            let mut = g.append("line")
               .attr("x1", (chr-1)*distance_c + distance_m)
               .attr("x2", (chr-1)*distance_c + c_width - distance_m)
               .attr("y1", position) 
               .attr("y2", position) 
-              .attr("stroke", color);
+              .attr("stroke", col);
+            mut.append("title").text(experement_data[i].value);
           } else { 
             //mutation not in the area of the centromere
             //draw mutation as a line with standard length
-            g.append("line")
+            let mut = g.append("line")
               .attr("x1", (chr-1)*distance_c)
               .attr("x2", (chr-1)*distance_c + c_width)
               .attr("y1", position) 
               .attr("y2", position) 
-              .attr("stroke", color);
+              .attr("stroke", col);
+            mut.append("title").text(experement_data[i].value);
           }
         }
       } else if (mutType == "gr") { //draw genomic region as a polygon
@@ -227,10 +228,11 @@ function draw_specific_mutations(experement_data, g, color, distance_c, c_width,
             String(distance_right_end) + " " + String(positionEnd) + ", " + 
             String(distance_right_start) + " " + String(positionStart)+ ", " + 
             String(distance_left_start) + " " + String(positionStart);
-          g.append("polyline")
+          let mut = g.append("polyline")
             .attr("points", polygon) 
-            .style("stroke", color)
-            .style("fill", color)
+            .style("stroke", col)
+            .style("fill", col)
+          mut.append("title").text(experement_data[i].value);
         }
       }
     }

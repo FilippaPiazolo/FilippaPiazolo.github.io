@@ -34,7 +34,7 @@
     <ul class="sidenav" id="mobile-links">
       <li><a href="">Main page</a></li>
       <li><a href="configurations.html">Configurations</a></li>
-      <li><a href="datavis.html">Visualise data</a></li>
+      <li><a href="datavis.html">Simple data visualisation</a></li>
       <li><a href="densityvis.html">Density visualisation</a></li>
       <li><a href="densitycomp.html">Density comparison</a></li>
     </ul>
@@ -47,9 +47,9 @@
         <div class="col s12">
           <div class="card-panel indigo lighten-4">
             <span class="text">
-              This tool is an interactive visualisation of phenotyps (human and mouse) that have been associates with SNPs or other locations along the genome. 
+              This tool is an interactive visualisation of phenotypes (human and mouse) that have been associates with SNPs or other locations along the genome. 
               The visualisation includes the annotation of each SNP and also the density distribution of all SNPs on the chromosomes. 
-              Using the density distribution clusters can be automatically defined by giving extra prerequisits, such as minimum cluster size and minimum number of included SNPs and a threshold value of the kde-score.
+              Using the density distribution clusters can be automatically defined by giving extra prerequisites, such as minimum cluster size and minimum number of included SNPs and a threshold value of the kde-score.
               The density between different datasets and experiments can also be visually compared to each other.
             </span>
           </div>
@@ -66,7 +66,7 @@
             </div>
             <div class="card-reveal">
               <span class="card-title grey-text text-darken-4">Configurations<i class="material-icons right">close</i></span>
-              <p>Here two files of datasets with each up to six different experiments can be uploaded. Also other configurations such as genome type or reference genome can be set here. 
+              <p>Here two files of datasets with each up to six different experiments can be uploaded. Also, other configurations such as the header names in the datafiles, genome type or genome reference can be set here. 
                 On this page the configuration and parameter settings can be downloaded and uploaded in the next session.</p>
             </div>
           </div>
@@ -78,12 +78,12 @@
               <img class="activator" src="images/mutations.svg">
             </div>
             <div class="card-content">
-              <span class="card-title activator grey-text text-darken-4">Data Visualisation<i class="material-icons right">more_vert</i></span>
+              <span class="card-title activator grey-text text-darken-4">Simple Data Visualisation<i class="material-icons right">more_vert</i></span>
               <p><a href="datavis.html">See SNP/genomic annotations.</a></p>
             </div>
             <div class="card-reveal">
               <span class="card-title grey-text text-darken-4">Data Visualisation<i class="material-icons right">close</i></span>
-              <p>Here the SNPs and other locations on the genome are visualised as colored lines on the chromosomes. Different experiments and datasets can be selected via checkboxes.</p>
+              <p>Here the SNPs and other locations on the genome are visualised as coloured lines on the chromosomes. Different experiments and datasets can be selected via checkboxes.</p>
             </div>
           </div>
         </div> 
@@ -99,8 +99,8 @@
             </div>
             <div class="card-reveal">
               <span class="card-title grey-text text-darken-4">Density Visualisation<i class="material-icons right">close</i></span>
-              <p>Using kernel density estimation with the Epachnikov kernel we can define the density distribution from the given SNPs. 
-                Througth sliders the parameters of the calculation can be changed. The denisty is than used to define clusters. For details of the cluster a link to the UCSC genome browser is included.</p>
+              <p>Using kernel density estimation with the Epanechnikov kernel we can define the density distribution from the given SNPs. 
+                Through sliders the parameters of the calculation can be changed. The density is then used to define clusters. For details of the cluster a link to the UCSC genome browser is included.</p>
             </div>
           </div>
         </div> 
@@ -116,8 +116,8 @@
             </div>
             <div class="card-reveal">
               <span class="card-title grey-text text-darken-4">Density Comparison<i class="material-icons right">close</i></span>
-              <p>Here the density between two different dataset or experiments can be compared. The desnity of one dataset is green and the other one is red. 
-                When the density of both datasets on an area of the chromosome is similar it gets yellow.</p>
+              <p>Here the density between two different dataset or experiments can be compared. The density of one dataset is green and the other one is red. 
+                When the density of both datasets in one area of the chromosome is similar it gets yellow.</p>
             </div>
           </div>
         </div>
@@ -148,27 +148,15 @@
     <footer class="page-footer indigo lighten-2">
       <div class="container">
         <div class="row">
-          <div class="col s6">
-            <h5 class="white-text">Company Bio</h5>
-            <p class="grey-text text-lighten-4">
-              We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.
-            </p>
-          </div>
+          <div class="col s4"></div>
           <div class="col s3">
-            <h5 class="white-text">Settings</h5>
-            <ul>
-              <li><a class="white-text" href="#!">Link 1</a></li>
-              <li><a class="white-text" href="#!">Link 2</a></li>
-            </ul>
+            <a class="white-text" href="https://www.uni-heidelberg.de/de/datenschutzerklaerung">privacy policy</a>
           </div>
-          <div class="col s3">
-            <h5 class="white-text">Connect</h5>
-            <ul>
-              <li><a class="white-text" href="#!">Link 1</a></li>
-              <li><a class="white-text" href="#!">Link 2</a></li>
-            </ul>
+          <div class="col s2">
+            <a class="white-text" href="https://www.uni-heidelberg.de/impressum.html">imprint</a>
           </div>
         </div>
+        <div class="row"></div>
       </div>
     </footer>
     
