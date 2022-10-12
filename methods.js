@@ -113,7 +113,7 @@ var color2 = ['gold', 'turquoise', 'LawnGreen', 'SkyBlue', 'Coral', 'BurlyWood']
 
 //---------------- CONVERT DATASET INTO RIGHT FORMAT -------------------//
 //convert chromosome number to only the number (from chr1 --> 1; chrX --> 23/20)
-function convert_data(data) { 
+function convert_data(data, split) { 
   var dataset = [];
   var samples = [];
 
@@ -128,7 +128,16 @@ function convert_data(data) {
   var sample = localStorage.getItem("h_sample");
   var value = localStorage.getItem("h_value"); 
 
-  var def = ar[0].split("\t");
+  //convert seperator
+  if (split == 'tab')
+    split = '\t';
+  else if (split == "comma")
+    split = ',';
+  else if (split == "semicolon")
+    split = ';'; 
+ 
+
+  var def = ar[0].split(split);
   var sampleIndex = def.indexOf(sample);
   var chrIndex = def.indexOf(chr);
   var posIndex = def.indexOf(pos);
@@ -136,10 +145,9 @@ function convert_data(data) {
   var endIndex = def.indexOf(end);
   var geneIndex = def.indexOf(gene);
   var valueIndex = def.indexOf(value);
-  console.log(value);
 
   for(let i = 1; i<ar.length-1; i++){
-    var res = ar[i].split("\t");
+    var res = ar[i].split(split);
     var obj;
     var chrNum = res[chrIndex].replace("chr", "");
 

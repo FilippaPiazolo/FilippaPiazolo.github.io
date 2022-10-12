@@ -105,6 +105,16 @@
               <input placeholder="value" id="h_value" type="text" class="validate">
               <label for="h_value">Value per mutation</label>
             </div>
+            <div class="input-field col s3">
+              <select id="seperator">
+                <option value="tab" >tab</option>
+                <option value="comma">comma</option>
+                <option value="semicolon">semicolon</option>
+              </select>
+              <label>Seperator of the collumns</label>
+            </div>
+          </div>
+          <div class="row">
             <div class="col s3">
               <a class="waves-effect waves-light btn"  id="header">set header</a>
             </div>
@@ -356,6 +366,8 @@
       if(tmp == null)
         tmp = document.getElementById("h_value").placeholder
       $('#h_value').attr("placeholder", tmp);
+
+      
     });
   </script>
   <script>
@@ -415,6 +427,9 @@
         localStorage.setItem("h_value", el.value)
       document.getElementById("t_value").innerHTML = localStorage.getItem("h_value");
 
+      el = document.getElementById("seperator").value;
+      localStorage.setItem("h_seperator", el);
+
       M.toast({html: 'header configurations saved'})
     })
 
@@ -442,6 +457,12 @@
       file2 = this.files[0];
     });
 
+    //selection of seperator
+    var seperator = localStorage.getItem("h_seperator");
+    if(seperator == null)
+      seperator = "tab";
+    document.querySelector("#seperator option[value="+seperator+"]").setAttribute('selected', 'selected');
+
     //selection of datatype for dataset 1
     var data1_type = localStorage.getItem("datatype1");
     if (data1_type == null) {
@@ -450,7 +471,7 @@
     }
     document.querySelector("#data1_type option[value="+data1_type+"]").setAttribute('selected', 'selected');
     //selection of datatype for dataset 2
-    var data2_type = data2_type = localStorage.getItem("datatype2");
+    var data2_type = localStorage.getItem("datatype2");
     if (data2_type == null){
       localStorage.setItem("datatype2", "pm")
       data2_type = "pm";
@@ -523,7 +544,10 @@
         localStorage.setItem("datafile1", file1.name);
         const reader = new FileReader();
         reader.addEventListener("load", () => {
-          var tmp = convert_data(reader.result);
+          var sep = localStorage.getItem("h_seperator");
+          if (sep == null)
+            sep = "tab"
+          var tmp = convert_data(reader.result, sep);
           dataset1 = tmp[0];
           samples1 = tmp[1];
           localStorage.setItem("data1", JSON.stringify(dataset1));
@@ -542,7 +566,10 @@
         //save data
         const reader2 = new FileReader();
         reader.addEventListener("load", () => {
-          var tmp =  convert_data(reader2.result);
+          var sep = localStorage.getItem("h_seperator");
+          if (sep == null)
+            sep = "tab"
+          var tmp =  convert_data(reader2.result, sep);
           dataset2 = tmp[0];
           samples2 = tmp[1];
           localStorage.setItem("data2", JSON.stringify(dataset2));
@@ -559,9 +586,6 @@
   <script>
     $("#save_txt").click(function() { 
       // write Configurations and Settings in txt-file
-
-      // Generate the file download URL and assign it to the link
-      // Wait until the page has loaded! Otherwise the download link element will not exist
       document.getElementById('downloadLink').href = generateTextFileUrl(
         'Configuration:\n' +
         'h_chr: ' + localStorage.getItem("h_chr") + '\n' +
@@ -571,6 +595,7 @@
         'h_sample: ' + localStorage.getItem("h_sample") + '\n' +
         'h_gene: ' + localStorage.getItem("h_gene") + '\n' +
         'h_value: ' + localStorage.getItem("h_value") + '\n' +
+        'h_seperator: ' + localStorage.getItem("h_seperator") + '\n' +
         'datafile1:' + localStorage.getItem("datafile1") + '\n' +
         'datafile2:' + localStorage.getItem("datafile2") + '\n' +
         'datatype1: ' + localStorage.getItem("datatype1") + '\n' +
