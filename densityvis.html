@@ -112,8 +112,8 @@
             <div class="collapsible-body">
               <span>changes the size of the bars in the histogram and the size of the grayscaled bins on the chromosomes</span>
               <p class="range-field">  
-                <input type="range" min="500000" max="10000000" step="500" value="500000" v-model="nodeSize" id="binSize"/> 
-                <input type="number" min="500000" max="10000000" step="500" value="500000" class="validate" id="binSize_text"/> 
+                <input type="range" min="100000" max="10000000" step="500" value="500000" v-model="nodeSize" id="binSize"/> 
+                <input type="number" min="100000" max="10000000" step="500" value="500000" class="validate" id="binSize_text"/> 
               </p>
             </div>
           </li>
@@ -162,8 +162,8 @@
             <div class="collapsible-body">
               <span>a cluster must have this size (number of included nucleotides), otherwise it is not defined as a cluster</span>
               <p class="range-field">  
-                <input type="range" min="50000" max="5000000" step="50000" value="1000000" v-model="nodeSize" id="minClusterSize"/> 
-                <input type="number" min="50000" max="5000000" step="50000" value="1000000" class="validate" id="minClusterSize_text" /> 
+                <input type="range" min="100000" max="5000000" step="50000" value="1000000" v-model="nodeSize" id="minClusterSize"/> 
+                <input type="number" min="100000" max="5000000" step="50000" value="1000000" class="validate" id="minClusterSize_text" /> 
               </p>
             </div>
           </li>
