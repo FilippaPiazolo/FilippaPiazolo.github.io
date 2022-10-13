@@ -107,7 +107,7 @@ var mouse_centromere = mouse_genome.map(mouse_genome => mouse_genome.centromere.
 
 var color = d3.schemePaired;
 var color1 = ['DarkOrange', 'green', 'red', 'purple', 'pink', 'blue']//['#1F77B4FF', '#FF7F0EFF', '#2CA02CFF', '#D62728FF', '#9467BDFF', '#E377C2FF'];//color.slice(0,6);//["green", "blue", "red", "purple", "pink", "orange"];
-var color2 = ['gold', 'turquoise', 'LawnGreen', 'SkyBlue', 'Coral', 'BurlyWood']//['#17BECFFF', '#B5CF6BFF', '#E7BA52FF', '#FF9896FF', '#C49C94FF', '#9C9EDEFF'];//color.slice(6);
+var color2 = ['turquoise', 'LawnGreen', 'gold', 'SkyBlue', 'Coral', 'BurlyWood']//['#17BECFFF', '#B5CF6BFF', '#E7BA52FF', '#FF9896FF', '#C49C94FF', '#9C9EDEFF'];//color.slice(6);
 
 
 
