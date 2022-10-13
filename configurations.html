@@ -565,7 +565,7 @@
         localStorage.setItem("datafile2", file2.name);
         //save data
         const reader2 = new FileReader();
-        reader.addEventListener("load", () => {
+        reader2.addEventListener("load", () => {
           var sep = localStorage.getItem("h_seperator");
           if (sep == null)
             sep = "tab"
