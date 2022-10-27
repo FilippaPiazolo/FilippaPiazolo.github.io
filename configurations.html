@@ -321,48 +321,48 @@
       $('.sidenav').sidenav();
       $('select').formSelect();
 
-      if(localStorage.getItem("data1") == null){
-        localStorage.setItem("data1", JSON.stringify([]));
-        localStorage.setItem("samples1", JSON.stringify([]));
-        localStorage.setItem("numdata1", 0);
+      if(sessionStorage.getItem("data1") == null){
+        sessionStorage.setItem("data1", JSON.stringify([]));
+        sessionStorage.setItem("samples1", JSON.stringify([]));
+        sessionStorage.setItem("numdata1", 0);
       }
-      if(localStorage.getItem("data2") == null){
-        localStorage.setItem("data2", JSON.stringify([]));
-        localStorage.setItem("samples2", JSON.stringify([]));
-        localStorage.setItem("numdata2", 0);
+      if(sessionStorage.getItem("data2") == null){
+        sessionStorage.setItem("data2", JSON.stringify([]));
+        sessionStorage.setItem("samples2", JSON.stringify([]));
+        sessionStorage.setItem("numdata2", 0);
       }
-      //default für localStorage schreiben!
-      var tmp = localStorage.getItem("h_chr");
+      //default für sessionStorage schreiben!
+      var tmp = sessionStorage.getItem("h_chr");
       if(tmp == null)
         tmp = document.getElementById("h_chr").placeholder
       $('#h_chr').attr("placeholder", tmp);
 
-      tmp = localStorage.getItem("h_pos");
+      tmp = sessionStorage.getItem("h_pos");
       if(tmp == null)
         tmp = document.getElementById("h_pos").placeholder
       $('#h_pos').attr("placeholder", tmp);
 
-      tmp = localStorage.getItem("h_start");
+      tmp = sessionStorage.getItem("h_start");
       if(tmp == null)
         tmp = document.getElementById("h_start").placeholder
       $('#h_start').attr("placeholder", tmp);
 
-      tmp = localStorage.getItem("h_end");
+      tmp = sessionStorage.getItem("h_end");
       if(tmp == null)
         tmp = document.getElementById("h_end").placeholder
       $('#h_end').attr("placeholder", tmp);
 
-      tmp = localStorage.getItem("h_sample");
+      tmp = sessionStorage.getItem("h_sample");
       if(tmp == null)
         tmp = document.getElementById("h_sample").placeholder
       $('#h_sample').attr("placeholder", tmp);
 
-      tmp = localStorage.getItem("h_gene");
+      tmp = sessionStorage.getItem("h_gene");
       if(tmp == null)
         tmp = document.getElementById("h_gene").placeholder
       $('#h_gene').attr("placeholder", tmp);
 
-      tmp = localStorage.getItem("h_value");
+      tmp = sessionStorage.getItem("h_value");
       if(tmp == null)
         tmp = document.getElementById("h_value").placeholder
       $('#h_value').attr("placeholder", tmp);
@@ -376,65 +376,65 @@
       //chromosome number
       var el = document.getElementById("h_chr")
       if (el.value == "") //no specific input --> take default (placeholder)
-        localStorage.setItem("h_chr", el.placeholder)
+        sessionStorage.setItem("h_chr", el.placeholder)
       else  
-        localStorage.setItem("h_chr", el.value)
-      document.getElementById("t_chr").innerHTML = localStorage.getItem("h_chr");
+        sessionStorage.setItem("h_chr", el.value)
+      document.getElementById("t_chr").innerHTML = sessionStorage.getItem("h_chr");
 
       //position SNP
       el = document.getElementById("h_pos")
       if (el.value == "") //no specific input --> take default (placeholder)
-        localStorage.setItem("h_pos", el.placeholder)
+        sessionStorage.setItem("h_pos", el.placeholder)
       else  
-        localStorage.setItem("h_pos", el.value)
-      document.getElementById("t_pos").innerHTML = localStorage.getItem("h_pos");
+        sessionStorage.setItem("h_pos", el.value)
+      document.getElementById("t_pos").innerHTML = sessionStorage.getItem("h_pos");
 
       //start positon genomic region
       el = document.getElementById("h_start")
       if (el.value == "") //no specific input --> take default (placeholder)
-        localStorage.setItem("h_start", el.placeholder)
+        sessionStorage.setItem("h_start", el.placeholder)
       else  
-        localStorage.setItem("h_start", el.value)
+        sessionStorage.setItem("h_start", el.value)
 
       //end positon genomic region
       el = document.getElementById("h_end")
       if (el.value == "") //no specific input --> take default (placeholder)
-        localStorage.setItem("h_end", el.placeholder)
+        sessionStorage.setItem("h_end", el.placeholder)
       else  
-        localStorage.setItem("h_end", el.value)
+        sessionStorage.setItem("h_end", el.value)
 
       //sample/experiment
       el = document.getElementById("h_sample")
       if (el.value == "") //no specific input --> take default (placeholder)
-        localStorage.setItem("h_sample", el.placeholder)
+        sessionStorage.setItem("h_sample", el.placeholder)
       else  
-        localStorage.setItem("h_sample", el.value)
-      document.getElementById("t_sample").innerHTML = localStorage.getItem("h_sample");
+        sessionStorage.setItem("h_sample", el.value)
+      document.getElementById("t_sample").innerHTML = sessionStorage.getItem("h_sample");
       
       //effected genes
       el = document.getElementById("h_gene")
       if (el.value == "") //no specific input --> take default (placeholder)
-        localStorage.setItem("h_gene", el.placeholder)
+        sessionStorage.setItem("h_gene", el.placeholder)
       else  
-        localStorage.setItem("h_gene", el.value)
-      document.getElementById("t_gene").innerHTML = localStorage.getItem("h_gene");
+        sessionStorage.setItem("h_gene", el.value)
+      document.getElementById("t_gene").innerHTML = sessionStorage.getItem("h_gene");
 
       //value
       el = document.getElementById("h_value")
       if (el.value == "") //no specific input --> take default (placeholder)
-        localStorage.setItem("h_value", el.placeholder)
+        sessionStorage.setItem("h_value", el.placeholder)
       else  
-        localStorage.setItem("h_value", el.value)
-      document.getElementById("t_value").innerHTML = localStorage.getItem("h_value");
+        sessionStorage.setItem("h_value", el.value)
+      document.getElementById("t_value").innerHTML = sessionStorage.getItem("h_value");
 
       el = document.getElementById("seperator").value;
-      localStorage.setItem("h_seperator", el);
+      sessionStorage.setItem("h_seperator", el);
 
       M.toast({html: 'header configurations saved'})
     })
 
     //upload dataset 1 and convert into right format
-    var datafile1 = localStorage.getItem("datafile1");
+    var datafile1 = sessionStorage.getItem("datafile1");
     if(datafile1 == null)
       datafile1 = "Upload file"
     $('#datafile1').attr("placeholder", datafile1);
@@ -446,7 +446,7 @@
     });
 
     //upload dataset 2 and convert into right format
-    var datafile2 = localStorage.getItem("datafile2");
+    var datafile2 = sessionStorage.getItem("datafile2");
     if(datafile2 == null)
       datafile2 = "Upload file"
     $('#datafile2').attr("placeholder", datafile2);
@@ -458,38 +458,38 @@
     });
 
     //selection of seperator
-    var seperator = localStorage.getItem("h_seperator");
+    var seperator = sessionStorage.getItem("h_seperator");
     if(seperator == null)
       seperator = "tab";
     document.querySelector("#seperator option[value="+seperator+"]").setAttribute('selected', 'selected');
 
     //selection of datatype for dataset 1
-    var data1_type = localStorage.getItem("datatype1");
+    var data1_type = sessionStorage.getItem("datatype1");
     if (data1_type == null) {
-      localStorage.setItem("datatype1", "pm")
+      sessionStorage.setItem("datatype1", "pm")
       data1_type = "pm";
     }
     document.querySelector("#data1_type option[value="+data1_type+"]").setAttribute('selected', 'selected');
     //selection of datatype for dataset 2
-    var data2_type = localStorage.getItem("datatype2");
+    var data2_type = sessionStorage.getItem("datatype2");
     if (data2_type == null){
-      localStorage.setItem("datatype2", "pm")
+      sessionStorage.setItem("datatype2", "pm")
       data2_type = "pm";
     }
     document.querySelector("#data2_type option[value="+data2_type+"]").setAttribute('selected', 'selected');
 
     //selection of genome type for both datasets
-    var genomeType = localStorage.getItem("genomeType");
+    var genomeType = sessionStorage.getItem("genomeType");
     if (genomeType == null) {
-      localStorage.setItem("genomeType", "human")
+      sessionStorage.setItem("genomeType", "human")
       genomeType = "human";
     }
     document.querySelector("#genomeType option[value="+genomeType+"]").setAttribute('selected', 'selected');
 
     //selection of genome reference for both datasets
-    var genomeRef = localStorage.getItem("genomeRef");
+    var genomeRef = sessionStorage.getItem("genomeRef");
     if(genomeRef == null) {
-      localStorage.setItem("genomeRef", "hg19")
+      sessionStorage.setItem("genomeRef", "hg19")
       genomeRef = "hg19";
     }
     document.querySelector("#genomeRef option[value="+genomeRef+"]").setAttribute('selected', 'selected');
@@ -501,8 +501,8 @@
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         setConfigurations(reader.result);
-        const file1 = localStorage.getItem("datafile1"),
-          file2 = localStorage.getItem("datafile2");
+        const file1 = sessionStorage.getItem("datafile1"),
+          file2 = sessionStorage.getItem("datafile2");
         var text = "These file(s): "
         if(file1 != null)
           text += file1 + " (as datafile 1)";
@@ -520,40 +520,40 @@
       //datatype1
       const data1_select = document.querySelector("#data1_type");
       data1_type = data1_select.value;
-      localStorage.setItem("datatype1", data1_type);
+      sessionStorage.setItem("datatype1", data1_type);
 
       //datatype2
       const data2_select = document.querySelector("#data2_type");
       data2_type = data2_select.value;
-      localStorage.setItem("datatype2", data2_type);
+      sessionStorage.setItem("datatype2", data2_type);
 
       //genome type
       const type_select = document.querySelector("#genomeType");
       genomeType = type_select.value;
-      localStorage.setItem("genomeType", genomeType);
+      sessionStorage.setItem("genomeType", genomeType);
 
       //genome reference
       const ref_select = document.querySelector("#genomeRef");
       genomeRef = ref_select.value;
-      localStorage.setItem("genomeRef", genomeRef);
+      sessionStorage.setItem("genomeRef", genomeRef);
 
       //datafile1
       var dataset1 = [];
       var samples1 = [];
       if(typeof file1 != 'undefined'){
-        localStorage.setItem("datafile1", file1.name);
+        sessionStorage.setItem("datafile1", file1.name);
         const reader = new FileReader();
         reader.addEventListener("load", () => {
-          var sep = localStorage.getItem("h_seperator");
+          var sep = sessionStorage.getItem("h_seperator");
           if (sep == null)
             sep = "tab"
           var tmp = convert_data(reader.result, sep);
           dataset1 = tmp[0];
           samples1 = tmp[1];
-          localStorage.setItem("data1", JSON.stringify(dataset1));
-          localStorage.setItem("samples1", JSON.stringify(samples1));
+          sessionStorage.setItem("data1", JSON.stringify(dataset1));
+          sessionStorage.setItem("samples1", JSON.stringify(samples1));
           //change number of mutations
-          localStorage.setItem("numdata1", dataset1.length);
+          sessionStorage.setItem("numdata1", dataset1.length);
         });
         reader.readAsText(file1);
       }
@@ -562,20 +562,20 @@
       var dataset2 = [];
       var samples2 = [];
       if(typeof file2 != 'undefined'){
-        localStorage.setItem("datafile2", file2.name);
+        sessionStorage.setItem("datafile2", file2.name);
         //save data
         const reader2 = new FileReader();
         reader2.addEventListener("load", () => {
-          var sep = localStorage.getItem("h_seperator");
+          var sep = sessionStorage.getItem("h_seperator");
           if (sep == null)
             sep = "tab"
           var tmp =  convert_data(reader2.result, sep);
           dataset2 = tmp[0];
           samples2 = tmp[1];
-          localStorage.setItem("data2", JSON.stringify(dataset2));
-          localStorage.setItem("samples2", JSON.stringify(samples2));
+          sessionStorage.setItem("data2", JSON.stringify(dataset2));
+          sessionStorage.setItem("samples2", JSON.stringify(samples2));
           //change number of mutations
-          localStorage.setItem("numdata2", dataset2.length);
+          sessionStorage.setItem("numdata2", dataset2.length);
         });
         reader2.readAsText(file2);
       }
@@ -588,38 +588,38 @@
       // write Configurations and Settings in txt-file
       document.getElementById('downloadLink').href = generateTextFileUrl(
         'Configuration:\n' +
-        'h_chr: ' + localStorage.getItem("h_chr") + '\n' +
-        'h_pos: ' + localStorage.getItem("h_pos") + '\n' +
-        'h_start: ' + localStorage.getItem("h_start") + '\n' +
-        'h_end: ' + localStorage.getItem("h_end") + '\n' +
-        'h_sample: ' + localStorage.getItem("h_sample") + '\n' +
-        'h_gene: ' + localStorage.getItem("h_gene") + '\n' +
-        'h_value: ' + localStorage.getItem("h_value") + '\n' +
-        'h_seperator: ' + localStorage.getItem("h_seperator") + '\n' +
-        'datafile1:' + localStorage.getItem("datafile1") + '\n' +
-        'datafile2:' + localStorage.getItem("datafile2") + '\n' +
-        'datatype1: ' + localStorage.getItem("datatype1") + '\n' +
-        'datatype2: ' + localStorage.getItem("datatype2") + '\n' +
-        'genomeType: ' + localStorage.getItem("genomeType") + '\n' +
-        'genomeRef: ' + localStorage.getItem("genomeRef") + '\n\n' +
+        'h_chr: ' + sessionStorage.getItem("h_chr") + '\n' +
+        'h_pos: ' + sessionStorage.getItem("h_pos") + '\n' +
+        'h_start: ' + sessionStorage.getItem("h_start") + '\n' +
+        'h_end: ' + sessionStorage.getItem("h_end") + '\n' +
+        'h_sample: ' + sessionStorage.getItem("h_sample") + '\n' +
+        'h_gene: ' + sessionStorage.getItem("h_gene") + '\n' +
+        'h_value: ' + sessionStorage.getItem("h_value") + '\n' +
+        'h_seperator: ' + sessionStorage.getItem("h_seperator") + '\n' +
+        'datafile1: ' + sessionStorage.getItem("datafile1") + '\n' +
+        'datafile2: ' + sessionStorage.getItem("datafile2") + '\n' +
+        'datatype1: ' + sessionStorage.getItem("datatype1") + '\n' +
+        'datatype2: ' + sessionStorage.getItem("datatype2") + '\n' +
+        'genomeType: ' + sessionStorage.getItem("genomeType") + '\n' +
+        'genomeRef: ' + sessionStorage.getItem("genomeRef") + '\n\n' +
         'ParametersSimpleVisualisation:\n' +
-        'value: ' + localStorage.getItem("value") + '\n' +
-        'startValue: ' + localStorage.getItem("startValue") + '\n' +
-        'endValue: ' + localStorage.getItem("endValue") + '\n' +
+        'value: ' + sessionStorage.getItem("value") + '\n' +
+        'startValue: ' + sessionStorage.getItem("startValue") + '\n' +
+        'endValue: ' + sessionStorage.getItem("endValue") + '\n' +
         'ParametersDensityVisualisation:\n' +
-        'binSize1: ' + localStorage.getItem("binSize1") + '\n' +
-        'bandwith1: ' + localStorage.getItem("bandwith1") + '\n' +
-        'amplitude1: ' + localStorage.getItem("amplitude1") + '\n' +
-        'numMut: ' + localStorage.getItem("numMut") + '\n' +
-        'cluster: ' + localStorage.getItem("cluster") + '\n' +
-        'minClusterSize: ' + localStorage.getItem("minClusterSize") + '\n' +
-        'sampleDensvis' + localStorage.getItem("sampleDensvis") + '\n\n' +
+        'binSize1: ' + sessionStorage.getItem("binSize1") + '\n' +
+        'bandwith1: ' + sessionStorage.getItem("bandwith1") + '\n' +
+        'amplitude1: ' + sessionStorage.getItem("amplitude1") + '\n' +
+        'numMut: ' + sessionStorage.getItem("numMut") + '\n' +
+        'cluster: ' + sessionStorage.getItem("cluster") + '\n' +
+        'minClusterSize: ' + sessionStorage.getItem("minClusterSize") + '\n' +
+        'sampleDensvis: ' + sessionStorage.getItem("sampleDensvis") + '\n\n' +
         'ParametersDensityComparison:\n' +
-        'binSize2: ' + localStorage.getItem("binSize2") + '\n' +
-        'bandwith2: ' + localStorage.getItem("bandwith2") + '\n' +
-        'amplitude2: ' + localStorage.getItem("amplitude2") + '\n' + 
-        'sampleComp1' + localStorage.getItem("sampleComp1") + '\n' + 
-        'sampleComp2' + localStorage.getItem("sampleComp1") + '\n'
+        'binSize2: ' + sessionStorage.getItem("binSize2") + '\n' +
+        'bandwith2: ' + sessionStorage.getItem("bandwith2") + '\n' +
+        'amplitude2: ' + sessionStorage.getItem("amplitude2") + '\n' + 
+        'sampleComp1: ' + sessionStorage.getItem("sampleComp1") + '\n' + 
+        'sampleComp2: ' + sessionStorage.getItem("sampleComp2") + '\n'
       );
     });
     

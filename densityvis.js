@@ -1,6 +1,6 @@
 
 /*
-Settings stored in localStorage:
+Settings stored in sessionStorage:
 Genom Type: #genomeType
 Genome Reference: #genomeRef
 Data Type 1: #datatype1
@@ -48,10 +48,10 @@ function comparisonDensity(){
   d3.select("#datacomp").select("text").remove();
 
 
-  var data1 = JSON.parse(localStorage.getItem("data1"));
-  var data2 = JSON.parse(localStorage.getItem("data2"));
+  var data1 = JSON.parse(sessionStorage.getItem("data1"));
+  var data2 = JSON.parse(sessionStorage.getItem("data2"));
 
-  var genome = localStorage.getItem("genomeType"), 
+  var genome = sessionStorage.getItem("genomeType"), 
     data_genome,
     centromere;
   
@@ -73,9 +73,9 @@ function comparisonDensity(){
     numberOfAllMutationsA = dataA.length,
     numberOfAllMutationsB = dataB.length;
   
-  var binSize = localStorage.getItem("binSize2"),
-    bandwith = localStorage.getItem("bandwith2"),
-    amplitude = localStorage.getItem("amplitude2");
+  var binSize = sessionStorage.getItem("binSize2"),
+    bandwith = sessionStorage.getItem("bandwith2"),
+    amplitude = sessionStorage.getItem("amplitude2");
 
   //get all bins for all chromosomes, get kde-value for each bin 
   var tmpA = getBinDensityAll(dataA, data_genome, numberOfAllMutationsA,$("#datacomp").width(), parseInt(binSize), parseInt(bandwith), parseInt(amplitude)),
@@ -202,7 +202,7 @@ function draw_distribution(dens, numMutations, allGenes, g, distance_c, c_width,
             .style("opacity", opacity)
         })
         .on("click", function(){ //click on chromosome to change diagram to the chromosome clicked
-          localStorage.setItem("chrNumber", i)
+          sessionStorage.setItem("chrNumber", i)
           all_density()
         })
         .style("fill", "black")
@@ -464,7 +464,7 @@ function linkGenomeBrowser(chrNumber, start, end){
     returns the url as a string
   */
 
-  return "https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=" + localStorage.getItem("genomeRef") + "&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=chr" + String(chrNumber) + "%3A" + String(start) + "%2D" + String(end) + "&hgsid=287468263_f4ah5As0fHokqKgjwt2PaNwTeBNM"  
+  return "https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=" + sessionStorage.getItem("genomeRef") + "&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=chr" + String(chrNumber) + "%3A" + String(start) + "%2D" + String(end) + "&hgsid=287468263_f4ah5As0fHokqKgjwt2PaNwTeBNM"  
 }
 
 
@@ -677,10 +677,10 @@ function all_density(){
   d3.select("#densvisAll").selectAll("path").remove();
   d3.select("#densvisAll").select("text").remove();
 
-  var data1 = JSON.parse(localStorage.getItem("data1"));
-  var data2 = JSON.parse(localStorage.getItem("data2"));
+  var data1 = JSON.parse(sessionStorage.getItem("data1"));
+  var data2 = JSON.parse(sessionStorage.getItem("data2"));
 
-  var genome = localStorage.getItem("genomeType"), 
+  var genome = sessionStorage.getItem("genomeType"), 
     data_genome,
     centromere;
 
@@ -702,19 +702,19 @@ function all_density(){
 
   //get all bins for all chromosomes, get kde-value for each bin 
   //Parameter aus Speicher lesen
-  var binSize = localStorage.getItem("binSize1"),
-    bandwith = localStorage.getItem("bandwith1"),
-    amplitude = localStorage.getItem("amplitude1"),
-    clusterThreshold = localStorage.getItem("cluster"),
-    minClusterSize = localStorage.getItem("minClusterSize"),
-    minNumMut = localStorage.getItem("numMut")
+  var binSize = sessionStorage.getItem("binSize1"),
+    bandwith = sessionStorage.getItem("bandwith1"),
+    amplitude = sessionStorage.getItem("amplitude1"),
+    clusterThreshold = sessionStorage.getItem("cluster"),
+    minClusterSize = sessionStorage.getItem("minClusterSize"),
+    minNumMut = sessionStorage.getItem("numMut")
   var tmp = getBinDensityAll(data, data_genome, numberOfAllMutations, $("#densvisChr").width(), parseInt(binSize), parseInt(bandwith), parseInt(amplitude));
   var allBins = tmp[0],
     allDensity = tmp[1],
     allMutNum = tmp[2],
     allGene = tmp[3];
 
-  var numberChr = parseInt(localStorage.getItem("chrNumber"))
+  var numberChr = parseInt(sessionStorage.getItem("chrNumber"))
   if(isNaN(numberChr))
     numberChr = 0
 
@@ -730,8 +730,8 @@ function all_density(){
 
 //fertig
 function getData(data1, data2, select){ //get data from selected checkboxes
-  var sample1 = JSON.parse(localStorage.getItem('samples1'));
-  var sample2 = JSON.parse(localStorage.getItem('samples2'));
+  var sample1 = JSON.parse(sessionStorage.getItem('samples1'));
+  var sample2 = JSON.parse(sessionStorage.getItem('samples2'));
    
   var data = [];
   for (i = 0; i<select.length; i++){

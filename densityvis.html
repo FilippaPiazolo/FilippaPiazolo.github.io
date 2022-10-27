@@ -213,42 +213,42 @@
     <script>
       $(document).ready(function(){ 
         $('.sidenav').sidenav();
-        var selected = JSON.parse(localStorage.getItem("sampleDensvis"));
+        var selected = JSON.parse(sessionStorage.getItem("sampleDensvis"));
         createSelectAll('select', selected);
         $('select').formSelect();
         $('.collapsible').collapsible();
         $('.dropdown-trigger').dropdown();
         all_density();
         //hier alle Parameter richtig setzen
-        var binSize = localStorage.getItem("binSize1"),
-          bandwith = localStorage.getItem("bandwith1"),
-          amplitude = localStorage.getItem("amplitude1"),
-          clusterThreshold = localStorage.getItem("cluster"),
-          minClusterSize = localStorage.getItem("minClusterSize"),
-          minNumMut = localStorage.getItem("numMut");
+        var binSize = sessionStorage.getItem("binSize1"),
+          bandwith = sessionStorage.getItem("bandwith1"),
+          amplitude = sessionStorage.getItem("amplitude1"),
+          clusterThreshold = sessionStorage.getItem("cluster"),
+          minClusterSize = sessionStorage.getItem("minClusterSize"),
+          minNumMut = sessionStorage.getItem("numMut");
         if (binSize == null){
           binSize = 500000;
-          localStorage.setItem("binSize1", binSize);
+          sessionStorage.setItem("binSize1", binSize);
         }
         if (bandwith == null){
           bandwith = 2000000;
-          localStorage.setItem("bandwith1", bandwith);
+          sessionStorage.setItem("bandwith1", bandwith);
         }
         if (amplitude == null){
           amplitude = 100000000;
-          localStorage.setItem("amplitude1", amplitude);
+          sessionStorage.setItem("amplitude1", amplitude);
         }
         if (clusterThreshold == null){
           clusterThreshold = 0.5;
-          localStorage.setItem("cluster", clusterThreshold);
+          sessionStorage.setItem("cluster", clusterThreshold);
         }
         if (minClusterSize == null){
           minClusterSize = 1000000;
-          localStorage.setItem("minClusterSize", minClusterSize);
+          sessionStorage.setItem("minClusterSize", minClusterSize);
         }
         if (minNumMut == null){
           minNumMut = 2;
-          localStorage.setItem("numMut", minNumMut);
+          sessionStorage.setItem("numMut", minNumMut);
         }
 
         $('#binSize_head').text("bin size: " + binSize);
@@ -294,7 +294,7 @@
       });
 
       $('#select').change(function(){
-        localStorage.setItem("sampleDensvis", JSON.stringify($('#select').val()));
+        sessionStorage.setItem("sampleDensvis", JSON.stringify($('#select').val()));
         all_density();
       })
 
@@ -307,42 +307,42 @@
         var binSize = $('#binSize').val();
         $('#binSize_head').text("bin size: " + binSize);
         document.getElementById('binSize_text').value = binSize;
-        localStorage.setItem("binSize1", binSize);
+        sessionStorage.setItem("binSize1", binSize);
         all_density();
       })
       $('#bandwith').change(function(){
         var bandwith = $('#bandwith').val();
         $('#bandwith_head').text("bandwith: " + bandwith);
         document.getElementById('bandwith_text').value = bandwith;
-        localStorage.setItem("bandwith1", bandwith);
+        sessionStorage.setItem("bandwith1", bandwith);
         all_density();
       })
       $('#amplitude').change(function(){
         var amplitude = $('#amplitude').val();
         $('#amplitude_head').text("amplitude: " + amplitude);
         document.getElementById('amplitude_text').value = amplitude;
-        localStorage.setItem("amplitude1", amplitude);
+        sessionStorage.setItem("amplitude1", amplitude);
         all_density();
       })
       $('#numMut').change(function(){
         var numMut = $('#numMut').val()
         $('#numMut_head').text("minimum number of mutations: " + numMut);
         document.getElementById('numMut_text').value = numMut;
-        localStorage.setItem("numMut", numMut);
+        sessionStorage.setItem("numMut", numMut);
         all_density();
       })
       $('#cluster').change(function(){
         var clusterThreshold = $('#cluster').val();
         $('#cluster_head').text("cluster threshold value: " + clusterThreshold);
         document.getElementById('cluster_text').value = clusterThreshold;
-        localStorage.setItem("cluster", clusterThreshold);
+        sessionStorage.setItem("cluster", clusterThreshold);
         all_density();
       })
       $('#minClusterSize').change(function(){
         var minClusterSize = $('#minClusterSize').val();
         $('#minClusterSize_head').text("minimal cluster size:" + minClusterSize);
         document.getElementById('minClusterSize_text').value = minClusterSize;
-        localStorage.setItem("minClusterSize", minClusterSize);
+        sessionStorage.setItem("minClusterSize", minClusterSize);
         all_density();
       })
 
@@ -351,42 +351,42 @@
         var binSize = $('#binSize_text').val();
         $('#binSize_head').text("bin size: " + binSize);
         document.getElementById('binSize').value = binSize;
-        localStorage.setItem("binSize1", binSize);
+        sessionStorage.setItem("binSize1", binSize);
         all_density();
       })
       $('#bandwith_text').change(function(){
         var bandwith = $('#bandwith_text').val();
         $('#bandwith_head').text("bandwith: " + bandwith);
         document.getElementById('bandwith').value = bandwith;
-        localStorage.setItem("bandwith1", bandwith);
+        sessionStorage.setItem("bandwith1", bandwith);
         all_density();
       })
       $('#amplitude_text').change(function(){
         var amplitude = $('#amplitude_text').val();
         $('#amplitude_head').text("amplitude: " + amplitude);
         document.getElementById('amplitude').value = amplitude;
-        localStorage.setItem("amplitude1", amplitude);
+        sessionStorage.setItem("amplitude1", amplitude);
         all_density();
       })
       $('#numMut_text').change(function(){
         var numMut =  $('#numMut_text').val();
         $('#numMut_head').text("minimum number of mutations: " + numMut);
         document.getElementById('numMut').value = numMut;
-        localStorage.setItem("numMut", numMut);
+        sessionStorage.setItem("numMut", numMut);
         all_density();
       })
       $('#cluster_text').change(function(){
         var clusterThreshold = $('#cluster_text').val();
         $('#cluster_head').text("cluster threshold value: " + clusterThreshold);
         document.getElementById('cluster').value = clusterThreshold;
-        localStorage.setItem("cluster", clusterThreshold);
+        sessionStorage.setItem("cluster", clusterThreshold);
         all_density();
       })
       $('#minClusterSize_text').change(function(){
         var minClusterSize = $('#minClusterSize_text').val();
         $('#minClusterSize_head').text("minimal cluster size:" + minClusterSize);
         document.getElementById('minClusterSize').value = minClusterSize;
-        localStorage.setItem("minClusterSize", minClusterSize);
+        sessionStorage.setItem("minClusterSize", minClusterSize);
         all_density();
       })
     </script>

@@ -121,10 +121,11 @@
     <script>
       $(document).ready(function(){ 
         $('.sidenav').sidenav();
-        var val = localStorage.getItem("value"),
-          start = localStorage.getItem("startValue"),
-          end = localStorage.getItem("endValue");
+        var val = sessionStorage.getItem("value"),
+          start = sessionStorage.getItem("startValue"),
+          end = sessionStorage.getItem("endValue");
         
+        console.log(val);
         if(val == null || val == "false"){
           document.getElementById('value_switch').checked = false;
           document.getElementById('range').style.display = "none";
@@ -148,7 +149,7 @@
       });
       $('#value_switch').change(function(){
         var tmp = $('#value_switch').is(':checked');
-        localStorage.setItem("value", tmp)
+        sessionStorage.setItem("value", tmp)
         if(tmp)
           document.getElementById('range').style.display = "block";
         else
@@ -156,15 +157,15 @@
         
         var el = document.getElementById("start")
         if (el.value == "") //no specific input --> take default (placeholder)
-          localStorage.setItem("startValue", el.placeholder)
+          sessionStorage.setItem("startValue", el.placeholder)
         else  
-          localStorage.setItem("startValue", el.value);
+          sessionStorage.setItem("startValue", el.value);
 
         el = document.getElementById("end")
         if (el.value == "") //no specific input --> take default (placeholder)
-          localStorage.setItem("endValue", el.placeholder)
+          sessionStorage.setItem("endValue", el.placeholder)
         else  
-          localStorage.setItem("endValue", el.value);
+          sessionStorage.setItem("endValue", el.value);
 
         d3.select("#datavis").select("g").remove();
         draw_svg();
@@ -172,9 +173,9 @@
       $('#start').change(function(){
         var el = document.getElementById("start")
         if (el.value == "") //no specific input --> take default (placeholder)
-          localStorage.setItem("startValue", el.placeholder)
+          sessionStorage.setItem("startValue", el.placeholder)
         else  
-          localStorage.setItem("startValue", el.value);
+          sessionStorage.setItem("startValue", el.value);
         
         d3.select("#datavis").select("g").remove();
         draw_svg();
@@ -182,9 +183,9 @@
       $('#end').change(function(){
         var el = document.getElementById("end")
         if (el.value == "") //no specific input --> take default (placeholder)
-          localStorage.setItem("endValue", el.placeholder)
+          sessionStorage.setItem("endValue", el.placeholder)
         else  
-          localStorage.setItem("endValue", el.value);
+          sessionStorage.setItem("endValue", el.value);
 
         d3.select("#datavis").select("g").remove();
         draw_svg();

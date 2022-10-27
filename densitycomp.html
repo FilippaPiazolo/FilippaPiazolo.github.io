@@ -143,29 +143,29 @@
     <script> //hier müssen alle Sachen refreshed werden, wenn Parameter,... sich verändern
       $(document).ready(function(){ 
         $('.sidenav').sidenav();
-        var selected1 = JSON.parse(localStorage.getItem("sampleComp1"));
+        var selected1 = JSON.parse(sessionStorage.getItem("sampleComp1"));
         createSelectAll('select1', selected1);
         $('select').formSelect();
-        var selected2 = JSON.parse(localStorage.getItem("sampleComp2"));
+        var selected2 = JSON.parse(sessionStorage.getItem("sampleComp2"));
         createSelectAll('select2', selected2);
         $('select').formSelect();
         $('.collapsible').collapsible();
         comparisonDensity()
         //hier alle Parameter richtig setzen
-        var binSize = localStorage.getItem("binSize2"),
-          bandwith = localStorage.getItem("bandwith2"),
-          amplitude = localStorage.getItem("amplitude2");
+        var binSize = sessionStorage.getItem("binSize2"),
+          bandwith = sessionStorage.getItem("bandwith2"),
+          amplitude = sessionStorage.getItem("amplitude2");
         if (binSize == null){
           binSize = 500000;
-          localStorage.setItem("binSize2", binSize);
+          sessionStorage.setItem("binSize2", binSize);
         }
         if (bandwith == null){
           bandwith = 2000000;
-          localStorage.setItem("bandwith2", bandwith);
+          sessionStorage.setItem("bandwith2", bandwith);
         }
         if (amplitude == null){
           amplitude = 100000000;
-          localStorage.setItem("amplitude2", amplitude);
+          sessionStorage.setItem("amplitude2", amplitude);
         }
         
         $('#binSize_head').text("bin size: " + binSize);
@@ -187,12 +187,12 @@
       });
 
       $('#select1').change(function(){
-        localStorage.setItem("sampleComp1", JSON.stringify($('#select1').val()))
+        sessionStorage.setItem("sampleComp1", JSON.stringify($('#select1').val()))
         //refresh diagram datacomp
         comparisonDensity();
       })
       $('#select2').change(function(){
-        localStorage.setItem("sampleComp2", JSON.stringify($('#select2').val()))
+        sessionStorage.setItem("sampleComp2", JSON.stringify($('#select2').val()))
         //refresh diagram datacomp
         comparisonDensity();
       })
@@ -201,21 +201,21 @@
         var binSize = $('#binSize').val();
         $('#binSize_head').text("bin size: " + binSize);
         document.getElementById('binSize_text').value = binSize;
-        localStorage.setItem("binSize2", binSize);
+        sessionStorage.setItem("binSize2", binSize);
         comparisonDensity();
       })
       $('#bandwith').change(function(){
         var bandwith = $('#bandwith').val();
         $('#bandwith_head').text("bandwith: " + bandwith);
         document.getElementById('bandwith_text').value = bandwith;
-        localStorage.setItem("bandwith2", bandwith);
+        sessionStorage.setItem("bandwith2", bandwith);
         comparisonDensity();
       })
       $('#amplitude').change(function(){
         var amplitude = $('#amplitude').val();
         $('#amplitude_head').text("amplitude: " + amplitude);
         document.getElementById('amplitude_text').value = amplitude;
-        localStorage.setItem("amplitude2", amplitude);
+        sessionStorage.setItem("amplitude2", amplitude);
         comparisonDensity();
       })
 
@@ -224,21 +224,21 @@
         var binSize = $('#binSize_text').val();
         $('#binSize_head').text("bin size: " + binSize);
         document.getElementById('binSize').value = binSize;
-        localStorage.setItem("binSize1", binSize);
+        sessionStorage.setItem("binSize1", binSize);
         comparisonDensity();
       })
       $('#bandwith_text').change(function(){
         var bandwith = $('#bandwith_text').val();
         $('#bandwith_head').text("bandwith: " + bandwith);
         document.getElementById('bandwith').value = bandwith;
-        localStorage.setItem("bandwith1", bandwith);
+        sessionStorage.setItem("bandwith1", bandwith);
         comparisonDensity();
       })
       $('#amplitude_text').change(function(){
         var amplitude = $('#amplitude_text').val();
         $('#amplitude_head').text("amplitude: " + amplitude);
         document.getElementById('amplitude').value = amplitude;
-        localStorage.setItem("amplitude1", amplitude);
+        sessionStorage.setItem("amplitude1", amplitude);
         comparisonDensity();
       })
     </script>

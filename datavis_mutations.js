@@ -19,10 +19,10 @@ function draw_svg()
     g = svg.append("g");
 
   let centromere, data_genome;
-  if (localStorage.getItem("genomeType") == "human"){
+  if (sessionStorage.getItem("genomeType") == "human"){
     centromere = human_centromere;
     data_genome = human_genome;
-  } else if (localStorage.getItem("genomeType") == "mouse"){
+  } else if (sessionStorage.getItem("genomeType") == "mouse"){
     centromere = mouse_centromere;
     data_genome = mouse_genome;
   }
@@ -34,14 +34,14 @@ function draw_svg()
   var allChecked = getCheckedCheckboxes( $('.filled-in').get());
   
   /*draw mutations of dataset 1*/
-  var data1 = JSON.parse(localStorage.getItem("data1"));
+  var data1 = JSON.parse(sessionStorage.getItem("data1"));
   if(data1.length != 0)
-    draw_mutations(data1, color1, g, distance_c, c_width, c_factor, centromere_d, centromere_x, centromere_y, allChecked, data_genome, localStorage.getItem("datatype1"), 1, localStorage.getItem("value"), parseFloat(localStorage.getItem("startValue")), parseFloat(localStorage.getItem("endValue")));
+    draw_mutations(data1, color1, g, distance_c, c_width, c_factor, centromere_d, centromere_x, centromere_y, allChecked, data_genome, sessionStorage.getItem("datatype1"), 1, sessionStorage.getItem("value"), parseFloat(sessionStorage.getItem("startValue")), parseFloat(sessionStorage.getItem("endValue")));
   
   /*draw mutations of dataset2*/
-  var data2 = JSON.parse(localStorage.getItem("data2"));
+  var data2 = JSON.parse(sessionStorage.getItem("data2"));
   if(data2.length != 0)
-    draw_mutations(data2, color2, g, distance_c, c_width, c_factor, centromere_d, centromere_x, centromere_y, allChecked, data_genome, localStorage.getItem("datatype2"), 2, localStorage.getItem("value"), parseFloat(localStorage.getItem("startValue")), parseFloat(localStorage.getItem("endValue")));
+    draw_mutations(data2, color2, g, distance_c, c_width, c_factor, centromere_d, centromere_x, centromere_y, allChecked, data_genome, sessionStorage.getItem("datatype2"), 2, sessionStorage.getItem("value"), parseFloat(sessionStorage.getItem("startValue")), parseFloat(sessionStorage.getItem("endValue")));
 
   /*allows zooming*/
   svg.call(zoom);
@@ -121,8 +121,8 @@ function draw_mutations(data, colors, svg, distance_c, c_width, c_factor, centro
     visualise mutations from selected experiments
   */
 
-  var sample1 = JSON.parse(localStorage.getItem('samples1'));
-  var sample2 = JSON.parse(localStorage.getItem('samples2'));
+  var sample1 = JSON.parse(sessionStorage.getItem('samples1'));
+  var sample2 = JSON.parse(sessionStorage.getItem('samples2'));
 
   for (let i = 0; i < layers.length; ++i) {
     if (layers[i] == "Dataset1"){

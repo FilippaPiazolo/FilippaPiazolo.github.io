@@ -1,5 +1,5 @@
 /*
-Settings stored in localStorage:
+Settings stored in sessionStorage:
 Genom Type: #genomeType
 Genome Reference: #genomeRef
 Data Type 1: #datatype1
@@ -120,13 +120,13 @@ function convert_data(data, split) {
   var text = data.replaceAll("\"","");
   var ar = text.split("\n");
 
-  var chr = localStorage.getItem("h_chr");
-  var pos = localStorage.getItem("h_pos");
-  var start = localStorage.getItem("h_start");
-  var end = localStorage.getItem("h_end");
-  var gene = localStorage.getItem("h_gene");
-  var sample = localStorage.getItem("h_sample");
-  var value = localStorage.getItem("h_value"); 
+  var chr = sessionStorage.getItem("h_chr");
+  var pos = sessionStorage.getItem("h_pos");
+  var start = sessionStorage.getItem("h_start");
+  var end = sessionStorage.getItem("h_end");
+  var gene = sessionStorage.getItem("h_gene");
+  var sample = sessionStorage.getItem("h_sample");
+  var value = sessionStorage.getItem("h_value"); 
 
   //convert seperator
   if (split == 'tab')
@@ -151,13 +151,13 @@ function convert_data(data, split) {
     var obj;
     var chrNum = res[chrIndex].replace("chr", "");
 
-    if(localStorage.getItem("genomeType") == "human"){
+    if(sessionStorage.getItem("genomeType") == "human"){
       if (chrNum == "X"){
         chrNum = "23"
       } else if (chrNum == "Y"){
         chrNum = "24"
       }
-    } else if (localStorage.getItem("genomeType") == "mouse"){
+    } else if (sessionStorage.getItem("genomeType") == "mouse"){
       if (chrNum == "X"){
         chrNum = "20"
       } else if (chrNum == "Y"){
@@ -297,17 +297,18 @@ function setConfigurations(data){
     const element = text[i];
     var tmp = element.split(" ");
     if (tmp.length > 1){
-      localStorage.setItem(tmp[0].replace(":",""), tmp[1]);
+      if (tmp[1] != "null")
+        sessionStorage.setItem(tmp[0].replace(":",""), tmp[1]);
     }
   }
 }
 
 //--------- CREATE CHECKBOXES OF GIVEN DATASET AND EXPERIMENTS ---------//
 function createCheckboxesDataVis(){
-  var sample1 = JSON.parse(localStorage.getItem('samples1'));
-  var sample2 = JSON.parse(localStorage.getItem('samples2'));
-  var data1 = JSON.parse(localStorage.getItem('data1'));
-  var data2 = JSON.parse(localStorage.getItem('data2'));
+  var sample1 = JSON.parse(sessionStorage.getItem('samples1'));
+  var sample2 = JSON.parse(sessionStorage.getItem('samples2'));
+  var data1 = JSON.parse(sessionStorage.getItem('data1'));
+  var data2 = JSON.parse(sessionStorage.getItem('data2'));
 
   if (data1.length != 0){
     if (sample1.length == 0){
@@ -363,10 +364,10 @@ function createCheckbox(id, color){
 
 //--------- CREATE SELECT OF GIVEN DATASET AND EXPERIMENTS ---------//
 function createSelectAll(id, selected){
-  var sample1 = JSON.parse(localStorage.getItem('samples1'));
-  var sample2 = JSON.parse(localStorage.getItem('samples2'));
-  var data1 = JSON.parse(localStorage.getItem('data1'));
-  var data2 = JSON.parse(localStorage.getItem('data2'));
+  var sample1 = JSON.parse(sessionStorage.getItem('samples1'));
+  var sample2 = JSON.parse(sessionStorage.getItem('samples2'));
+  var data1 = JSON.parse(sessionStorage.getItem('data1'));
+  var data2 = JSON.parse(sessionStorage.getItem('data2'));
   if(selected == null)
     document.querySelector("#"+id+" option[value=\"\"]").setAttribute('selected', 'selected');
   if(data1.length != 0)
