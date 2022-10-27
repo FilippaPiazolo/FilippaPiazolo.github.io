@@ -352,11 +352,13 @@ function define_cluster(clusterValue, minClusterSize, points, mutation_bins_gene
 
 
 //fertig
-function draw_cluster(clusterAll, numMutations, allGenes, g, distance_c, c_width, c_factor, genomeType) {
+function draw_cluster(clusterAll, g, distance_c, c_width, c_factor, genomeType) {
   /*
     mark all cluster with an orange box around the bins
     return: cluster number, chromosome number, effected genes, start and end point of each cluster
   */
+  var clusterText = "cluster id \tchr num \tstart \tend \tnum of mutations \t genes \tlink to genome browser \n";
+
   for (let i = 0; i < clusterAll.length; i++) {
     const cluster = clusterAll[i],
       number = cluster[0],
@@ -415,20 +417,24 @@ function draw_cluster(clusterAll, numMutations, allGenes, g, distance_c, c_width
       return cluster_gene.indexOf(ele) == pos;
     }) 
     cluster_gene.sort()
-    //show detail information of cluster, when moving mouse over id
 
+    //show detail information of cluster, when moving mouse over id
     if (cluster_gene.length > 0){ //cluster has effected genes
       //chromosome number, position on chromosome, number of mutations, effected genes
       clusterNumber.append("title") 
         .text("chromosome: " + chrNumber + "\nposition: " + String(start) + "-" + String(end) + 
-              "\nnumber of mutations: " + String(numMut) + "\ngene: " + String(cluster_gene)) 
+              "\nnumber of mutations: " + String(numMut) + "\ngene: " + String(cluster_gene));
+      clusterText += String(number) + "\t" + chrNumber + "\t" + String(start) + "\t" + String(end) + "\t" + String(numMut) + "\t" + String(cluster_gene) + "\t" + String(link) + "\n"; 
     } else { //cluster has no effected genes
       clusterNumber.append("title") 
         .text("chromosome: " + chrNumber + "\nposition: " + String(start) + "-" + String(end) + 
-              "\nnumber of mutations: " + String(numMut) + "\nno specific gene")
+              "\nnumber of mutations: " + String(numMut) + "\nno specific gene");
+      clusterText += String(number) + "\t" + chrNumber + "\t" + String(start) + "\t" + String(end) + "\t" + String(numMut) + "\t" + "no sepecific" + "\t" + String(link) + "\n";
     }
 
+    
   }
+  sessionStorage.setItem("clusterText", clusterText);
 }
 
 
@@ -475,24 +481,6 @@ function generate_text(numMutations, allGenes, i, j) {
 }
 
 
-//--> extra Tabelle erstellen (als html Element) --> evtl Text downloaden...
-function generate_text_cluster(allCluster) { 
-  /*
-    generates text for table with overview of resulting clusters
-  */
-  var res = ""
-  for (let cluster = 0; cluster < allCluster.length; ++cluster) {
-    var gene = ""
-    if (allCluster[cluster][2].length > 0)
-      gene = String(allCluster[cluster][2])
-    else
-      gene = "no specific gene"
-    res += "|" + "[" + String(allCluster[cluster][0])+"]("+ linkGenomeBrowser(allCluster[cluster][1], allCluster[cluster][3][0], allCluster[cluster][3][1]) + ")" + "|" + String(allCluster[cluster][1]) + 
-      "|" + gene + "|" + String(allCluster[cluster][3][0]) + "-" + String(allCluster[cluster][3][1]) + "|\n"
-  }
-  return res
-}
-
 
 //fertig
 function draw_density_all(data_genome, centromere, data, density, numMutations, allGenes, cluster, genomeType, minNumMut) {
@@ -533,7 +521,7 @@ function draw_density_all(data_genome, centromere, data, density, numMutations, 
 
   /*mark cluster*/
   if (document.getElementById('clusterCbx').checked){
-    draw_cluster(cluster, numMutations, allGenes, g, distance_c, c_width, c_factor, genomeType)
+    draw_cluster(cluster, g, distance_c, c_width, c_factor, genomeType)
   }
   
   svg.call(zoom);
@@ -546,7 +534,6 @@ function draw_density_all(data_genome, centromere, data, density, numMutations, 
 
   return svg.node();
 }
-
 
 
 //fertig
@@ -712,7 +699,6 @@ function all_density(){
   //get all selected data --> number of all Mutations
   const data = getData(data1, data2, $('#select').val()),
     numberOfAllMutations = data.length;
-  
 
   //get all bins for all chromosomes, get kde-value for each bin 
   //Parameter aus Speicher lesen

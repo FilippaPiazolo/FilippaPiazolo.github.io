@@ -25,10 +25,13 @@
             <!-- Dropdown Structure -->
             <ul id='dropdown1' class='dropdown-content'>
               <li id='drop1'>
-                <a id="downloadLink1" href="#" download="density_chromosome.svg"  title="Download Specific Chromosome Image">specific</a>
+                <a id="downloadLink1" href="#" download="density_chromosome.svg"  title="Download Specific Chromosome Image">single chr image</a>
               </li>
               <li id='drop2'>
-                <a id="downloadLink2" href="#" download="density_all.svg"  title="Download Overall Chromosome Image">overall</a>
+                <a id="downloadLink2" href="#" download="density_all.svg"  title="Download Overall Chromosome Image">all chr image</a>
+              </li>
+              <li id='drop3'>
+                <a id="downloadLink3" href="#" download="cluster.txt"  title="Download Cluster Text">cluster text</a>
               </li>
             </ul>
           </div>
@@ -172,7 +175,7 @@
         <form action="#">
           <div class="input-field col s12">
             <select multiple id="select">
-              <option value="" disabled selected>Choose your option</option>
+              <option value="" disabled>Choose your option</option>
             </select>
             <label>Dataset/Experiment selection</label>
           </div>
@@ -210,7 +213,8 @@
     <script>
       $(document).ready(function(){ 
         $('.sidenav').sidenav();
-        createSelectAll('select');
+        var selected = JSON.parse(localStorage.getItem("sampleDensvis"));
+        createSelectAll('select', selected);
         $('select').formSelect();
         $('.collapsible').collapsible();
         $('.dropdown-trigger').dropdown();
@@ -270,6 +274,8 @@
         $('#minClusterSize_head').text("minimal cluster size:" + minClusterSize);
         document.getElementById('minClusterSize_text').value = minClusterSize;
         document.getElementById('minClusterSize').value = minClusterSize;
+
+
       });
       
       $("#drop1").click(function(){
@@ -280,9 +286,18 @@
           downloadSVG("densvisAll", "downloadLink2");
       });
 
+      $("#drop3").click(function() { 
+        var text = sessionStorage.getItem("clusterText");
+        if(text == null)
+          text = "no clusters"
+        document.getElementById('downloadLink3').href = generateTextFileUrl(text);
+      });
+
       $('#select').change(function(){
+        localStorage.setItem("sampleDensvis", JSON.stringify($('#select').val()));
         all_density();
       })
+
       $('#checkboxes').change(function(){
         all_density();
       })

@@ -362,25 +362,30 @@ function createCheckbox(id, color){
 
 
 //--------- CREATE SELECT OF GIVEN DATASET AND EXPERIMENTS ---------//
-function createSelectAll(id){
+function createSelectAll(id, selected){
   var sample1 = JSON.parse(localStorage.getItem('samples1'));
   var sample2 = JSON.parse(localStorage.getItem('samples2'));
   var data1 = JSON.parse(localStorage.getItem('data1'));
   var data2 = JSON.parse(localStorage.getItem('data2'));
+  if(selected == null)
+    document.querySelector("#"+id+" option[value=\"\"]").setAttribute('selected', 'selected');
   if(data1.length != 0)
-    createSelect("Dataset1", sample1, id);
+    createSelect("Dataset1", sample1, id, selected);
   if(data2.length != 0)
-    createSelect("Dataset2", sample2, id);
+    createSelect("Dataset2", sample2, id, selected);
 }
 
 
-function createSelect(dataset, sample, id){
+function createSelect(dataset, sample, id, selected){
   var container = document.getElementById(id)
   var optgroup = document.createElement('optgroup');
   optgroup.label = dataset;
   if(sample.length == 0){
     var option = document.createElement('option');
     option.value = dataset;
+    if(selected != null && selected.includes(dataset)){
+      option.selected = true;
+    }
     option.appendChild(document.createTextNode(dataset));
 
     optgroup.appendChild(option);
@@ -388,6 +393,9 @@ function createSelect(dataset, sample, id){
     for (let i=0; i<sample.length; i++){
       var option = document.createElement('option');
       option.value = sample[i];
+      if(selected != null && selected.includes(sample[i])){
+        option.selected = true;
+      }
       option.appendChild(document.createTextNode(sample[i]));
 
       optgroup.appendChild(option);

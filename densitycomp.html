@@ -97,7 +97,7 @@
         <form action="#">
           <div class="input-field col s12">
             <select multiple id="select1"> 
-              <option value="" disabled selected>Choose your option</option>
+              <option value="" disabled>Choose your option</option>
             </select>
             <label><font color="red">Dataset/Experiment selection</font> </label>
           </div>
@@ -105,7 +105,7 @@
         <form action="#">
           <div class="input-field col s12">
             <select multiple id="select2">
-              <option value="" disabled selected>Choose your option</option>
+              <option value="" disabled>Choose your option</option>
             </select>
             <label><font color="green">Dataset/Experiment selection</font> </label>
           </div>
@@ -143,9 +143,11 @@
     <script> //hier müssen alle Sachen refreshed werden, wenn Parameter,... sich verändern
       $(document).ready(function(){ 
         $('.sidenav').sidenav();
-        createSelectAll('select1');
+        var selected1 = JSON.parse(localStorage.getItem("sampleComp1"));
+        createSelectAll('select1', selected1);
         $('select').formSelect();
-        createSelectAll('select2');
+        var selected2 = JSON.parse(localStorage.getItem("sampleComp2"));
+        createSelectAll('select2', selected2);
         $('select').formSelect();
         $('.collapsible').collapsible();
         comparisonDensity()
@@ -185,10 +187,12 @@
       });
 
       $('#select1').change(function(){
+        localStorage.setItem("sampleComp1", JSON.stringify($('#select1').val()))
         //refresh diagram datacomp
         comparisonDensity();
       })
       $('#select2').change(function(){
+        localStorage.setItem("sampleComp2", JSON.stringify($('#select2').val()))
         //refresh diagram datacomp
         comparisonDensity();
       })
